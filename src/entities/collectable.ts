@@ -16,9 +16,10 @@ export class Collectable extends Physics.Matter.Sprite {
         this.setFrictionAir(0);
         this.setBounce(0.2);
         this.setRotation(Math.random() * Math.PI * 2);
+        this.setVelocity((Math.random() - 0.5) * 0.2, (Math.random() - 0.5) * 0.2);
         this.setMass(1.0);
         this.collectableType = collectableType;
         this.value = value;
-        
+
     }
 }
