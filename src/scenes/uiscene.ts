@@ -1,4 +1,4 @@
-import { Scene, Types } from 'phaser';
+import { GameObjects, Scene, Types } from 'phaser';
 import { Bar } from '../ui/fuelbar';
 import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
@@ -10,6 +10,7 @@ export class UIScene extends Scene {
     fuelbar?: Bar;
     airbar?: Bar;
     energybar?: Bar;
+    stunned?: GameObjects.Text;
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
         if(!config){config = {};}
@@ -29,6 +30,8 @@ export class UIScene extends Scene {
         this.airbar = new Bar(this, 'bar_air', 16);
         this.fuelbar = new Bar(this, 'bar_fuel', 40);
         this.energybar = new Bar(this, 'bar_energy', 64);
+        this.stunned = this.add.text(16, 84, "Stunned");
+        this.stunned.setVisible(false);
     }
 
     update(time: number, delta: number) {
@@ -46,6 +49,15 @@ export class UIScene extends Scene {
             if(this.energybar){
                 this.energybar.value = player.battery / player.batteryMax;
                 this.energybar.update(this, time, delta);
+            }
+            if(player.stunned > 0.0){
+                if(player.stunned > 1000.0){
+                    this.stunned?.setVisible(player.stunned > 0.0);
+                }else{
+                    this.stunned?.setVisible((((player.stunned / 200.0)|0)&1) == 0);
+                }
+            }else{
+                this.stunned?.setVisible(false);
             }
         }
     }

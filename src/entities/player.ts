@@ -1,4 +1,4 @@
-import { GameObjects, Scene, Physics, Types } from "phaser";
+import { GameObjects, Scene, Physics, Types, Math as PhaserMath } from "phaser";
 import { WASDKeyMap } from "../scenes/gamescene";
 import { Collectable } from "./collectable";
 import { Wreckage } from "./wreckage";
@@ -15,7 +15,10 @@ export class Player extends Physics.Matter.Sprite {
 
     lightmap: GameObjects.Sprite;
 
+    stunned: number;
     isDead: boolean;
+    didCollide: boolean;
+    collisionVelocity: PhaserMath.Vector2 | MatterJS.Vector;
 
     thrusterForward: GameObjects.Sprite;
     thrusterBackward: GameObjects.Sprite;
@@ -26,7 +29,7 @@ export class Player extends Physics.Matter.Sprite {
     wasdKeys: WASDKeyMap;
 
     collideWith(e:Types.Physics.Matter.MatterCollisionData, other: any) {
-        if(this.isDead){return;}
+        if(this.isDead || this.stunned > 0.0){return;}
         if(other instanceof Collectable){
             this[other.collectableType] = this[other.collectableType] + other.value;
             this.ceilResources();
@@ -44,7 +47,8 @@ export class Player extends Physics.Matter.Sprite {
             other.destroy();
         }
         if(other instanceof Wreckage){
-            this.isDead = true;
+            this.didCollide = true;
+            this.collisionVelocity = new Phaser.Math.Vector2(this.body.velocity.x, this.body.velocity.y);
         }
     }
 
@@ -58,6 +62,7 @@ export class Player extends Physics.Matter.Sprite {
         super(scene.matter.world, x, y, 'player');
         scene.add.existing(this);
 
+        this.stunned = -1.0;
         this.fuel = 800.0;
         this.fuelMax = 1000.0;
 
@@ -86,6 +91,8 @@ export class Player extends Physics.Matter.Sprite {
 
         this.cursorKeys = cursorKeys;
         this.wasdKeys = wasdKeys;
+        this.collisionVelocity = this.body.velocity;
+        this.didCollide = false;
 
         this.lightmap = scene.add.sprite(x,y,'lightmap');
         this.lightmap.setScale(0.5);
@@ -179,8 +186,19 @@ export class Player extends Physics.Matter.Sprite {
 
     update(time: number, delta: number) {
         const ndelta = delta / 16.0;
+        this.stunned -= delta;
         this.updateChildren();
-        if((this.fuel > 0.0) && !this.isDead){
+        if(this.didCollide){
+            const diff = {x: this.body.velocity.x - this.collisionVelocity.x, y: this.body.velocity.y - this.collisionVelocity.y };
+            const dist = Math.sqrt(diff.x * diff.x + diff.y * diff.y);
+            if(dist > 5){
+                this.isDead = true;
+            } else if(dist > 3){
+                this.stunned = 5000.0;
+            }
+            this.didCollide = false;
+        }
+        if((this.fuel > 0.0) && !this.isDead && (this.stunned < 0.0)){
             this.updateControls(delta);
         } else {
             this.thrusterForward.setVisible(false);
