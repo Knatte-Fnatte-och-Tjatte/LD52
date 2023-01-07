@@ -6,12 +6,21 @@ import { Collectable, CollectableType } from '../entities/collectable';
 
 const SPRITE_COUNT = 20;
 
+export type WASDKeyMap = {
+    W: Phaser.Input.Keyboard.Key,
+    A: Phaser.Input.Keyboard.Key,
+    S: Phaser.Input.Keyboard.Key,
+    D: Phaser.Input.Keyboard.Key,
+}
+
 export class GameScene extends Scene {
     player?: Player;
     lightSources?: GameObjects.Layer;
     wrecks: Wreckage[];
     collectables: Collectable[];
     cursorKeys?: Types.Input.Keyboard.CursorKeys;
+    wasdKeys?: WASDKeyMap;
+
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
         if(!config){config = {};}
@@ -40,12 +49,13 @@ export class GameScene extends Scene {
     create () {
         const worldWidth = 5000;
         const worldHeight = 5000;
-        this.cursorKeys =  this.input.keyboard.createCursorKeys();
+        this.cursorKeys = this.input.keyboard.createCursorKeys();
+        this.wasdKeys = this.input.keyboard.addKeys('W,A,S,D') as WASDKeyMap;
 
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
         this.lights.enable();
-        this.player = new Player(this, 640, 360, this.cursorKeys);
+        this.player = new Player(this, 640, 360, this.cursorKeys, this.wasdKeys);
 
         this.cameras.main.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
         this.cameras.main.startFollow(this.player, false, 0.1, 0.1, 0, 0);

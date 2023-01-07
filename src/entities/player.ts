@@ -1,4 +1,5 @@
 import { GameObjects, Scene, Physics, Types } from "phaser";
+import { WASDKeyMap } from "../scenes/gamescene";
 import { Collectable } from "./collectable";
 
 export class Player extends Physics.Matter.Sprite {
@@ -19,6 +20,7 @@ export class Player extends Physics.Matter.Sprite {
     thrusterRotateCCW: GameObjects.Sprite;
 
     cursorKeys: Types.Input.Keyboard.CursorKeys;
+    wasdKeys: WASDKeyMap;
 
     collideWith(other: any) {
         if(other instanceof Collectable){
@@ -34,7 +36,7 @@ export class Player extends Physics.Matter.Sprite {
         this.battery = Math.min(this.battery, this.batteryMax);
     }
 
-    constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys) {
+    constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys, wasdKeys: WASDKeyMap) {
         super(scene.matter.world, x, y, 'player');
         scene.add.existing(this);
 
@@ -63,6 +65,7 @@ export class Player extends Physics.Matter.Sprite {
         this.thrusterRotateCCW.setDepth(2);
 
         this.cursorKeys = cursorKeys;
+        this.wasdKeys = wasdKeys;
 
         this.lightmap = scene.add.sprite(x,y,'lightmap');
         this.lightmap.setScale(0.5);
@@ -91,7 +94,7 @@ export class Player extends Physics.Matter.Sprite {
         }
         this.setAngularVelocity(curAngVel);
 
-        if (this.cursorKeys.up.isDown && this.fuel > 0.0) {
+        if ((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.fuel > 0.0) {
             this.fuel -= ndelta * 0.1;
             this.thrust(0.01 * ndelta);
             this.thrusterForward.setVisible(true);
@@ -99,9 +102,25 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterForward.setVisible(false);
         }
 
-        if (this.cursorKeys.down.isDown && this.fuel > 0.0) {
+        if ((this.cursorKeys.down.isDown || this.wasdKeys.S.isDown) && this.fuel > 0.0) {
             this.fuel -= ndelta * 0.1;
-            this.thrust(-0.01 * ndelta);
+            this.thrustBack(0.01 * ndelta);
+            this.thrusterBackward.setVisible(true);
+        } else {
+            this.thrusterBackward.setVisible(false);
+        }
+
+        if (this.wasdKeys.A.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 0.1;
+            this.thrustLeft(0.01 * ndelta);
+            this.thrusterBackward.setVisible(true);
+        } else {
+            this.thrusterBackward.setVisible(false);
+        }
+
+        if (this.wasdKeys.D.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 0.1;
+            this.thrustRight(0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);

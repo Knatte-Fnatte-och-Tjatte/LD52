@@ -20,6 +20,5 @@ export class Collectable extends Physics.Matter.Sprite {
         this.setMass(1.0);
         this.collectableType = collectableType;
         this.value = value;
-
     }
 }
