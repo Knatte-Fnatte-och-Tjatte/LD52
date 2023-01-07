@@ -3,6 +3,17 @@ import { WASDKeyMap } from "../scenes/gamescene";
 import { Collectable } from "./collectable";
 import { Wreckage } from "./wreckage";
 
+const FUEL_CONSUMPTION = 0.4;
+const TURN_RATE = 0.0003;
+const ACCELERATION_RATE = 0.01;
+
+const OXYGEN_CONSUMPTION_RATE = 0.04;
+const ENERGY_CONSUMPTION_RATE = 0.004;
+
+const STUN_DURATION_MS = 5000.0;
+const COLLISION_STUN_THRESHOLD = 3.0;
+const COLLISION_DEATH_THRESHOLD = 5.0;
+
 export class Player extends Physics.Matter.Sprite {
     fuel: number;
     fuelMax: number;
@@ -114,16 +125,16 @@ export class Player extends Physics.Matter.Sprite {
         const body = this.body as any;
         let curAngVel = body.angularVelocity;
         if ((this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown)) {
-            this.fuel -= ndelta * 0.4;
-            curAngVel += -0.0003 * ndelta;
+            this.fuel -= ndelta * FUEL_CONSUMPTION;
+            curAngVel -= TURN_RATE * ndelta;
             this.thrusterRotateCCW.setVisible(true);
         } else {
             this.thrusterRotateCCW.setVisible(false);
         }
 
         if ((this.cursorKeys.right.isDown || this.wasdKeys.E.isDown)) {
-            this.fuel -= ndelta * 0.4;
-            curAngVel -= -0.0003 * ndelta;
+            this.fuel -= ndelta * FUEL_CONSUMPTION;
+            curAngVel += TURN_RATE * ndelta;
             this.thrusterRotateCW.setVisible(true);
         } else {
             this.thrusterRotateCW.setVisible(false);
@@ -131,32 +142,32 @@ export class Player extends Physics.Matter.Sprite {
         this.setAngularVelocity(curAngVel);
 
         if ((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown)) {
-            this.fuel -= ndelta * 0.4;
-            this.thrust(0.01 * ndelta);
+            this.fuel -= ndelta * FUEL_CONSUMPTION;
+            this.thrust(ACCELERATION_RATE * ndelta);
             this.thrusterForward.setVisible(true);
         } else {
             this.thrusterForward.setVisible(false);
         }
 
         if ((this.cursorKeys.down.isDown || this.wasdKeys.S.isDown)) {
-            this.fuel -= ndelta * 0.4;
-            this.thrustBack(0.01 * ndelta);
+            this.fuel -= ndelta * FUEL_CONSUMPTION;
+            this.thrustBack(ACCELERATION_RATE * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);
         }
 
         if (this.wasdKeys.A.isDown) {
-            this.fuel -= ndelta * 0.4;
-            this.thrustLeft(0.01 * ndelta);
+            this.fuel -= ndelta * FUEL_CONSUMPTION;
+            this.thrustLeft(ACCELERATION_RATE * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);
         }
 
         if (this.wasdKeys.D.isDown) {
-            this.fuel -= ndelta * 0.4;
-            this.thrustRight(0.01 * ndelta);
+            this.fuel -= ndelta * FUEL_CONSUMPTION;
+            this.thrustRight(ACCELERATION_RATE * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);
@@ -191,10 +202,10 @@ export class Player extends Physics.Matter.Sprite {
         if(this.didCollide){
             const diff = {x: this.body.velocity.x - this.collisionVelocity.x, y: this.body.velocity.y - this.collisionVelocity.y };
             const dist = Math.sqrt(diff.x * diff.x + diff.y * diff.y);
-            if(dist > 5){
+            if(dist > COLLISION_DEATH_THRESHOLD){
                 this.isDead = true;
-            } else if(dist > 3){
-                this.stunned = 5000.0;
+            } else if(dist > COLLISION_STUN_THRESHOLD){
+                this.stunned = STUN_DURATION_MS;
             }
             this.didCollide = false;
         }
@@ -206,9 +217,9 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterRotateCW.setVisible(false);
             this.thrusterRotateCCW.setVisible(false);
         }
-        this.battery -= 0.004 * ndelta;
+        this.battery -= ENERGY_CONSUMPTION_RATE * ndelta;
 
-        this.oxygen -= 0.04 * ndelta;
+        this.oxygen -= OXYGEN_CONSUMPTION_RATE * ndelta;
         if(this.oxygen <= 0){
             this.isDead = true;
         }
