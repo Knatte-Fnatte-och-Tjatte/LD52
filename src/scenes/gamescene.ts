@@ -46,6 +46,10 @@ export class GameScene extends Scene {
         this.load.image('thrust_rotate_ccw', 'assets/thrust_rotate_ccw.png');
         this.load.image('thrust_backward', 'assets/thrust_backward.png');
         this.load.image('thrust_forward', 'assets/thrust_forward.png');
+
+        this.load.audio("fuel_change", "sfx/battery_change.mp3");
+        this.load.audio("oxygen_change", "sfx/oxygen_change.mp3");
+        this.load.audio("battery_change", "sfx/battery_change.mp3");
     }
 
     create () {

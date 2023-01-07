@@ -26,15 +26,18 @@ export class Player extends Physics.Matter.Sprite {
         if(other instanceof Collectable){
             this[other.collectableType] = this[other.collectableType] + other.value;
             this.ceilResources();
-            other.destroy();
             switch(other.collectableType){
                 case "battery":
+                    this.scene.sound.add('battery_change').play();
                     break;
                 case "fuel":
+                    this.scene.sound.add('fuel_change').play();
                     break;
                 case "oxygen":
+                    this.scene.sound.add('oxygen_change').play();
                     break;
             }
+            other.destroy();
         }
     }
 
