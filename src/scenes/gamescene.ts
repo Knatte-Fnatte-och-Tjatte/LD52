@@ -39,7 +39,8 @@ export class GameScene extends Scene {
         this.load.image('light' , 'assets/light.png');
         this.load.image('player', 'assets/player.png');
         this.load.image('hull', 'assets/hull.png');
-        this.load.image('lightmap', 'assets/lightmap.png');
+        this.load.image('lightmask', 'assets/lightmask.png');
+        this.load.image('lightcone', 'assets/lightcone.png');
 
         this.load.image('fuel', 'assets/fuel.png');
         this.load.image('oxygen', 'assets/oxygen.png');

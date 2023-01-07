@@ -3,7 +3,7 @@ import { WASDKeyMap } from "../scenes/gamescene";
 import { Collectable } from "./collectable";
 import { Wreckage } from "./wreckage";
 
-const FUEL_CONSUMPTION = 0.4;
+const FUEL_CONSUMPTION = 0.3;
 const TURN_RATE = 0.0003;
 const ACCELERATION_RATE = 0.01;
 
@@ -17,6 +17,8 @@ const COLLISION_DEATH_THRESHOLD = 5.0;
 const PLAYER_MASS = 100.0;
 const PLAYER_BOUNCE = 0.2;
 
+const LIGHTCONE_ALPHA = 0.35;
+
 export class Player extends Physics.Matter.Sprite {
     fuel: number;
     fuelMax: number;
@@ -27,7 +29,8 @@ export class Player extends Physics.Matter.Sprite {
     battery: number;
     batteryMax: number;
 
-    lightmap: GameObjects.Sprite;
+    lightmask: GameObjects.Sprite;
+    lightcone: GameObjects.Sprite;
 
     stunned: number;
     isDead: boolean;
@@ -108,10 +111,8 @@ export class Player extends Physics.Matter.Sprite {
         this.collisionVelocity = this.body.velocity;
         this.didCollide = false;
 
-        this.lightmap = scene.add.sprite(x,y,'lightmap');
-        this.lightmap.setScale(0.5);
-        this.lightmap.setDepth(1);
-        //this.lightmap.setVisible(false);
+        this.lightmask = scene.add.sprite(x,y,'lightmask').setScale(0.5).setDepth(1);
+        this.lightcone = scene.add.sprite(x,y,'lightcone').setScale(0.5).setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
 
         const player = this;
         this.setOnCollide((e:Types.Physics.Matter.MatterCollisionData) => {
@@ -178,15 +179,12 @@ export class Player extends Physics.Matter.Sprite {
     }
 
     updateChildren() {
-        const thrusters = [this.thrusterForward, this.thrusterBackward, this.thrusterRotateCCW, this.thrusterRotateCW, this.thrusterStrafeLeft, this.thrusterStrafeRight];
-        for(const t of thrusters){
+        const children = [this.thrusterForward, this.thrusterBackward, this.thrusterRotateCCW, this.thrusterRotateCW, this.thrusterStrafeLeft, this.thrusterStrafeRight, this.lightmask, this.lightcone];
+        for(const t of children){
             t.x = this.x;
             t.y = this.y;
             t.angle = this.angle;
         }
-
-        this.lightmap.setPosition(this.x, this.y);
-        this.lightmap.angle = this.angle;
     }
 
     update(time: number, delta: number) {
