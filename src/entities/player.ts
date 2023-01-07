@@ -12,7 +12,7 @@ export class Player {
     energyMax: number;
 
     sprite: Physics.Matter.Sprite;
-    omniLight: GameObjects.Light;
+    lightmap: GameObjects.Sprite;
 
     thrusterForward: GameObjects.Sprite;
     thrusterBackward: GameObjects.Sprite;
@@ -39,8 +39,9 @@ export class Player {
         this.thrusterBackward = scene.add.sprite(x,y,'thrust_backward');
         this.thrusterRotateCW = scene.add.sprite(x,y,'thrust_rotate_cw');
         this.thrusterRotateCCW = scene.add.sprite(x,y,'thrust_rotate_ccw');
-
-        this.omniLight = scene.lights.addLight(x, y, 512, 0xFFFFFF, 3.0);
+        this.lightmap = scene.add.sprite(x,y,'lightmap');
+        this.lightmap.setScale(0.5);
+        this.lightmap.setDepth(1);
     }
 
     update(scene: Scene, time: number, delta: number) {
@@ -100,6 +101,7 @@ export class Player {
         this.thrusterRotateCCW.y = this.sprite.y;
         this.thrusterRotateCCW.angle = this.sprite.angle;
 
-        this.omniLight.setPosition(this.sprite.x, this.sprite.y);
+        this.lightmap.setPosition(this.sprite.x, this.sprite.y);
+        this.lightmap.angle = this.sprite.angle;
     }
 }

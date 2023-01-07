@@ -23,6 +23,7 @@ export class GameScene extends Scene {
         this.load.image('bg', 'assets/background.png');
         this.load.image('player', 'assets/player.png');
         this.load.image('hull', 'assets/hull.png');
+        this.load.image('lightmap', 'assets/lightmap.png');
 
         this.load.image('thrust_rotate_cw', 'assets/thrust_rotate_cw.png');
         this.load.image('thrust_rotate_ccw', 'assets/thrust_rotate_ccw.png');

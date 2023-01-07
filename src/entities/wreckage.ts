@@ -11,6 +11,5 @@ export class Wreckage {
         this.sprite.setBounce(0.2);
         this.sprite.setRotation(Math.random() * Math.PI * 2);
         this.sprite.setMass(1000.0);
-        this.sprite.setPipeline('Light2D');
     }
 }
