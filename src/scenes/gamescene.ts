@@ -1,12 +1,9 @@
-import { GameObjects, Physics, Scene, Types } from 'phaser';
-import { Bar } from '../ui/fuelbar';
+import { GameObjects, Scene, Types } from 'phaser';
 import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
 import { Collectable, CollectableType } from '../entities/collectable';
-import { GameOverScene } from './gameover';
 import { Asteroid } from '../entities/asteroid';
 
-const SPRITE_COUNT = 20;
 const ASTEROID_SHOWER_INTERVAL = 1.0 * 60.0 * 1000.0;
 
 const normalize = (v:[number, number]) => {
@@ -111,6 +108,8 @@ export class GameScene extends Scene {
             const vy = (Math.random()-0.5) * 0.2;
             this.asteroids.push(new Asteroid(this, x, y, vx, vy));
         }
+
+        this.scene.run("UIScene");
     }
 
     spawnAsteroidShower(){
@@ -118,12 +117,12 @@ export class GameScene extends Scene {
         const px = this.player?.x || 0;
         const py = this.player?.y || 0;
 
-        for(let i=0;i<50;i++){
+        for(let i=0;i<4;i++){
             const deg = mdeg + (Math.random()-0.5) * Math.PI*2.0 * 0.2;
             const start_x = px + Math.cos(deg) * 5000.0;
             const start_y = py + Math.sin(deg) * 5000.0;
-            const vx = start_x * -0.01 * (1.0 + ((Math.random() - 0.5)*0.1));
-            const vy = start_y * -0.01 * (1.0 + ((Math.random() - 0.5)*0.1));
+            const vx = start_x * -0.005 * (1.0 + ((Math.random() - 0.5)*0.1));
+            const vy = start_y * -0.005 * (1.0 + ((Math.random() - 0.5)*0.1));
             this.asteroids.push(new Asteroid(this, start_x, start_y, vx, vy));
         }
     }
@@ -143,7 +142,6 @@ export class GameScene extends Scene {
 
         if(this.cursorKeys?.space.isDown){
             if(time > this.lastAsteroidShower){
-
                 this.spawnAsteroidShower();
             }
             this.lastAsteroidShower = time + 50.0;

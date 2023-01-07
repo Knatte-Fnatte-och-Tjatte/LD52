@@ -115,9 +115,8 @@ export class Player extends Physics.Matter.Sprite {
         this.collisionVelocity = this.body.velocity;
         this.didCollide = false;
 
-        this.lightmask = scene.add.sprite(x,y,'lightmask').setScale(0.5).setDepth(1);
-        this.lightmask.setVisible(false);
-        this.lightcone = scene.add.sprite(x,y,'lightcone').setScale(0.5).setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
+        this.lightmask = scene.add.sprite(x,y,'lightmask').setDepth(1);
+        this.lightcone = scene.add.sprite(x,y,'lightcone').setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
 
         const player = this;
         this.setOnCollide((e:Types.Physics.Matter.MatterCollisionData) => {

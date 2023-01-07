@@ -4,6 +4,7 @@ import { Game, Types } from 'phaser';
 import { GameScene } from './scenes/gamescene';
 import { UIScene } from './scenes/uiscene';
 import { GameOverScene } from './scenes/gameover';
+import { MainMenuScene } from './scenes/mainmenu';
 
 const main = () => {
     const config: Types.Core.GameConfig = {
@@ -23,7 +24,7 @@ const main = () => {
                 debug: false
             }
         },
-        scene: [ GameScene, UIScene, GameOverScene ]
+        scene: [ MainMenuScene, GameScene, UIScene, GameOverScene ]
     };
     const game = new Game(config);
 };

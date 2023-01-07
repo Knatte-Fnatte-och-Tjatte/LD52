@@ -1,10 +1,4 @@
-import { Scene, Types } from 'phaser';
-import { Bar } from '../ui/fuelbar';
-import { Player } from '../entities/player';
-import { Wreckage } from '../entities/wreckage';
-import { GameScene } from './gamescene';
-
-const SPRITE_COUNT = 20;
+import { Scene } from 'phaser';
 
 export class GameOverScene extends Scene {
 
