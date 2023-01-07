@@ -9,5 +9,6 @@ export class Wreckage {
         this.sprite.setFrictionAir(0);
         this.sprite.setBounce(0.2);
         this.sprite.setRotation(Math.PI * 1.5);
+        this.sprite.setMass(1000.0);
     }
 }
