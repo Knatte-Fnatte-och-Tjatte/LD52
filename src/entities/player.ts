@@ -42,14 +42,14 @@ export class Player {
         this.sprite.setAngularVelocity(curAngVel);
 
         if (cursors.up.isDown) {
-            this.sprite.thrust(0.003 * ndelta);
+            this.sprite.thrust(0.002 * ndelta);
             this.thrusterForward.setVisible(true);
         } else {
             this.thrusterForward.setVisible(false);
         }
 
         if (cursors.down.isDown) {
-            this.sprite.thrust(-0.001 * ndelta);
+            this.sprite.thrust(-0.002 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);

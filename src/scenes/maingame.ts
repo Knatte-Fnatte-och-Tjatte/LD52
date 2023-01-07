@@ -1,10 +1,11 @@
-import { Scene } from 'phaser';
-import {Player} from '../entities/player';
+import { Scene, Types } from 'phaser';
+import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
 
 const SPRITE_COUNT = 20;
 
 export class MainGame extends Scene {
+    camera: Types.Cameras.Controls;
     player?: Player;
     wrecks: Wreckage[];
 
@@ -25,15 +26,22 @@ export class MainGame extends Scene {
     }
 
     create () {
+        const worldWidth = 5000;
+        const worldHeight = 5000;
+
         const width = window.innerWidth;
         const height = window.innerHeight;
-        const bg = this.add.tileSprite(width/2, height/2, width, height, 'bg');
-        this.matter.world.setBounds(0, 0, 1280, 720);
-        this.player = new Player(this, 640, 360)
+        const bg = this.add.tileSprite(0, 0, worldWidth*2, worldWidth*2, 'bg');
+        this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth, worldHeight);
+        this.player = new Player(this, 640, 360);
+
+        this.cameras.main.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
+        this.cameras.main.startFollow(this.player.sprite, false, 0.1, 0.1, 0, 0);
+
         this.wrecks = [];
-        for(let i=0;i<5;i++){
-            const x = Math.random() * 1280;
-            const y = Math.random() * 720;
+        for(let i=0;i<50;i++){
+            const x = Math.random() * worldWidth;
+            const y = Math.random() * worldHeight;
             this.wrecks.push(new Wreckage(this, x, y));
         }
     }
