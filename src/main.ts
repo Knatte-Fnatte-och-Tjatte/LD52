@@ -1,17 +1,25 @@
 import './style.css';
 
-import { Game } from 'phaser';
+import { Game, Types } from 'phaser';
 import { MainGame } from './scenes/maingame';
 
 const main = () => {
-    const config = {
+    const config: Types.Core.GameConfig = {
         type: Phaser.WEBGL,
         width: 1280,
         height: 720,
-        pixelArt: true,
         scale: {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
+        },
+        physics: {
+            default: 'matter',
+            matter: {
+                gravity: {
+                    y: 0
+                },
+                debug: false
+            }
         },
         scene: [ MainGame ]
     };
