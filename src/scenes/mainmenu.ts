@@ -16,6 +16,7 @@ I guess the most difficult part
 of the job is not to be bored to death.
 
 *yawn*
+
 *snoring*`.split("\n");
 
 export class MainMenuScene extends Scene {
@@ -33,14 +34,13 @@ export class MainMenuScene extends Scene {
 
     create () {
         const titleText = this.add.text(1280/2 - 74, 64, ["Cosmonaut Game"], { align: 'center'});
-
         const introText = this.add.text(1280/2 - 320, 128, introTextArr, { align: 'justify', fixedWidth: 640});
 
-        const tryAgainButton = this.add.image(1280/2, 720 - 128, 'button_start');
+        const startButton = this.add.image(1280/2, 720 - 128, 'button_start');
         const that = this;
-        tryAgainButton.setInteractive().on("pointerdown", () => {
+        startButton.setInteractive().on("pointerdown", () => {
             that.scene.switch("GameScene");
-        })
+        });
     }
 
     update(time: number, delta: number) {
