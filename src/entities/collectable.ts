@@ -5,6 +5,9 @@ import { Player } from "./player";
 
 export type CollectableType = "oxygen" | "fuel" | "battery";
 
+const COLLECTABLE_BOUNCE = 0.2;
+const COLLECTABLE_MASS = 10.0;
+
 export class Collectable extends Physics.Matter.Sprite {
     collectableType: CollectableType;
     value: number;
@@ -14,10 +17,10 @@ export class Collectable extends Physics.Matter.Sprite {
         this.scene.add.existing(this);
 
         this.setFrictionAir(0);
-        this.setBounce(0.2);
+        this.setBounce(COLLECTABLE_BOUNCE);
         this.setRotation(Math.random() * Math.PI * 2);
         this.setVelocity((Math.random() - 0.5) * 0.2, (Math.random() - 0.5) * 0.2);
-        this.setMass(1.0);
+        this.setMass(COLLECTABLE_MASS);
         this.collectableType = collectableType;
         this.value = value;
     }

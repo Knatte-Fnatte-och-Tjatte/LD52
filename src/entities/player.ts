@@ -14,6 +14,9 @@ const STUN_DURATION_MS = 5000.0;
 const COLLISION_STUN_THRESHOLD = 3.0;
 const COLLISION_DEATH_THRESHOLD = 5.0;
 
+const PLAYER_MASS = 100.0;
+const PLAYER_BOUNCE = 0.2;
+
 export class Player extends Physics.Matter.Sprite {
     fuel: number;
     fuelMax: number;
@@ -87,9 +90,9 @@ export class Player extends Physics.Matter.Sprite {
 
         this.setScale(0.5, 0.5);
         this.setFrictionAir(0);
-        this.setBounce(0.2);
+        this.setBounce(PLAYER_BOUNCE);
         this.setRotation(Math.PI * 1.5);
-        this.setMass(100.0);
+        this.setMass(PLAYER_MASS);
 
         this.thrusterForward = scene.add.sprite(x,y,'thrust_forward');
         this.thrusterBackward = scene.add.sprite(x,y,'thrust_backward');
