@@ -36,6 +36,8 @@ export class Player extends Physics.Matter.Sprite {
 
     thrusterForward: GameObjects.Sprite;
     thrusterBackward: GameObjects.Sprite;
+    thrusterStrafeLeft: GameObjects.Sprite;
+    thrusterStrafeRight: GameObjects.Sprite;
     thrusterRotateCW: GameObjects.Sprite;
     thrusterRotateCCW: GameObjects.Sprite;
 
@@ -94,14 +96,12 @@ export class Player extends Physics.Matter.Sprite {
         this.setRotation(Math.PI * 1.5);
         this.setMass(PLAYER_MASS);
 
-        this.thrusterForward = scene.add.sprite(x,y,'thrust_forward');
-        this.thrusterBackward = scene.add.sprite(x,y,'thrust_backward');
-        this.thrusterRotateCW = scene.add.sprite(x,y,'thrust_rotate_cw');
-        this.thrusterRotateCCW = scene.add.sprite(x,y,'thrust_rotate_ccw');
-        this.thrusterForward.setDepth(2);
-        this.thrusterBackward.setDepth(2);
-        this.thrusterRotateCW.setDepth(2);
-        this.thrusterRotateCCW.setDepth(2);
+        this.thrusterForward = scene.add.sprite(x,y,'thrust_forward').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterBackward = scene.add.sprite(x,y,'thrust_backward').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterStrafeLeft = scene.add.sprite(x,y,'thrust_strafe_left').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterStrafeRight = scene.add.sprite(x,y,'thrust_strafe_right').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterRotateCW = scene.add.sprite(x,y,'thrust_rotate_cw').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterRotateCCW = scene.add.sprite(x,y,'thrust_rotate_ccw').setDepth(2).setScale(0.5).setVisible(false);
 
         this.cursorKeys = cursorKeys;
         this.wasdKeys = wasdKeys;
@@ -163,36 +163,27 @@ export class Player extends Physics.Matter.Sprite {
         if (this.wasdKeys.A.isDown) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             this.thrustLeft(ACCELERATION_RATE * ndelta);
-            this.thrusterBackward.setVisible(true);
+            this.thrusterStrafeLeft.setVisible(true);
         } else {
-            this.thrusterBackward.setVisible(false);
+            this.thrusterStrafeLeft.setVisible(false);
         }
 
         if (this.wasdKeys.D.isDown) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             this.thrustRight(ACCELERATION_RATE * ndelta);
-            this.thrusterBackward.setVisible(true);
+            this.thrusterStrafeRight.setVisible(true);
         } else {
-            this.thrusterBackward.setVisible(false);
+            this.thrusterStrafeRight.setVisible(false);
         }
     }
 
     updateChildren() {
-        this.thrusterForward.x = this.x;
-        this.thrusterForward.y = this.y;
-        this.thrusterForward.angle = this.angle;
-
-        this.thrusterBackward.x = this.x;
-        this.thrusterBackward.y = this.y;
-        this.thrusterBackward.angle = this.angle;
-
-        this.thrusterRotateCW.x = this.x;
-        this.thrusterRotateCW.y = this.y;
-        this.thrusterRotateCW.angle = this.angle;
-
-        this.thrusterRotateCCW.x = this.x;
-        this.thrusterRotateCCW.y = this.y;
-        this.thrusterRotateCCW.angle = this.angle;
+        const thrusters = [this.thrusterForward, this.thrusterBackward, this.thrusterRotateCCW, this.thrusterRotateCW, this.thrusterStrafeLeft, this.thrusterStrafeRight];
+        for(const t of thrusters){
+            t.x = this.x;
+            t.y = this.y;
+            t.angle = this.angle;
+        }
 
         this.lightmap.setPosition(this.x, this.y);
         this.lightmap.angle = this.angle;
@@ -217,6 +208,8 @@ export class Player extends Physics.Matter.Sprite {
         } else {
             this.thrusterForward.setVisible(false);
             this.thrusterBackward.setVisible(false);
+            this.thrusterStrafeLeft.setVisible(false);
+            this.thrusterStrafeRight.setVisible(false);
             this.thrusterRotateCW.setVisible(false);
             this.thrusterRotateCCW.setVisible(false);
         }
