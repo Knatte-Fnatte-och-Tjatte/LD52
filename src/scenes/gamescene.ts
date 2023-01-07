@@ -75,7 +75,7 @@ export class GameScene extends Scene {
 
         this.collectables = [];
         const ta:CollectableType[] = ["fuel", "oxygen", "battery"];
-        for(let i=0;i<500;i++){
+        for(let i=0;i<100;i++){
             const x = Math.random() * worldWidth;
             const y = Math.random() * worldHeight;
             const t = ta[(Math.random() * 3)|0];

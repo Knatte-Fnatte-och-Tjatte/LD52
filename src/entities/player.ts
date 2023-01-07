@@ -89,7 +89,7 @@ export class Player extends Physics.Matter.Sprite {
         const body = this.body as any;
         let curAngVel = body.angularVelocity;
         if ((this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown) && this.fuel > 0.0) {
-            this.fuel -= ndelta * 0.1;
+            this.fuel -= ndelta * 0.4;
             curAngVel += -0.0003 * ndelta;
             this.thrusterRotateCCW.setVisible(true);
         } else {
@@ -97,7 +97,7 @@ export class Player extends Physics.Matter.Sprite {
         }
 
         if ((this.cursorKeys.right.isDown || this.wasdKeys.E.isDown) && this.fuel > 0.0) {
-            this.fuel -= ndelta * 0.1;
+            this.fuel -= ndelta * 0.4;
             curAngVel -= -0.0003 * ndelta;
             this.thrusterRotateCW.setVisible(true);
         } else {
@@ -106,7 +106,7 @@ export class Player extends Physics.Matter.Sprite {
         this.setAngularVelocity(curAngVel);
 
         if ((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.fuel > 0.0) {
-            this.fuel -= ndelta * 0.1;
+            this.fuel -= ndelta * 0.4;
             this.thrust(0.01 * ndelta);
             this.thrusterForward.setVisible(true);
         } else {
@@ -114,7 +114,7 @@ export class Player extends Physics.Matter.Sprite {
         }
 
         if ((this.cursorKeys.down.isDown || this.wasdKeys.S.isDown) && this.fuel > 0.0) {
-            this.fuel -= ndelta * 0.1;
+            this.fuel -= ndelta * 0.4;
             this.thrustBack(0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
@@ -122,7 +122,7 @@ export class Player extends Physics.Matter.Sprite {
         }
 
         if (this.wasdKeys.A.isDown && this.fuel > 0.0) {
-            this.fuel -= ndelta * 0.1;
+            this.fuel -= ndelta * 0.4;
             this.thrustLeft(0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
@@ -130,15 +130,15 @@ export class Player extends Physics.Matter.Sprite {
         }
 
         if (this.wasdKeys.D.isDown && this.fuel > 0.0) {
-            this.fuel -= ndelta * 0.1;
+            this.fuel -= ndelta * 0.4;
             this.thrustRight(0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);
         }
 
-        this.oxygen -= 0.01 * ndelta;
-        this.battery -= 0.001 * ndelta;
+        this.oxygen -= 0.04 * ndelta;
+        this.battery -= 0.004 * ndelta;
 
         this.thrusterForward.x = this.x;
         this.thrusterForward.y = this.y;
