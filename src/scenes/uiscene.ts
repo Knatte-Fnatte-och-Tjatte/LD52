@@ -41,11 +41,11 @@ export class UIScene extends Scene {
                 this.fuelbar.update(this, time, delta);
             }
             if(this.airbar){
-                this.airbar.value = player.air / player.airMax;
+                this.airbar.value = player.oxygen / player.oxygenMax;
                 this.airbar.update(this, time, delta);
             }
             if(this.energybar){
-                this.energybar.value = player.energy / player.energyMax;
+                this.energybar.value = player.battery / player.batteryMax;
                 this.energybar.update(this, time, delta);
             }
         }

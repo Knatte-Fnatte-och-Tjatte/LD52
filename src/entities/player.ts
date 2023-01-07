@@ -1,17 +1,16 @@
-import { Body } from "matter";
-import { Textures, GameObjects, Scene, Physics } from "phaser";
+import { GameObjects, Scene, Physics, Types } from "phaser";
+import { Collectable } from "./collectable";
 
-export class Player {
+export class Player extends Physics.Matter.Sprite {
     fuel: number;
     fuelMax: number;
 
-    air: number;
-    airMax: number;
+    oxygen: number;
+    oxygenMax: number;
 
-    energy: number;
-    energyMax: number;
+    battery: number;
+    batteryMax: number;
 
-    sprite: Physics.Matter.Sprite;
     lightmap: GameObjects.Sprite;
 
     thrusterForward: GameObjects.Sprite;
@@ -19,89 +18,115 @@ export class Player {
     thrusterRotateCW: GameObjects.Sprite;
     thrusterRotateCCW: GameObjects.Sprite;
 
-    constructor (scene:Scene, x:number, y:number) {
+    cursorKeys: Types.Input.Keyboard.CursorKeys;
+
+    collideWith(other: any) {
+        if(other instanceof Collectable){
+            this[other.collectableType] = this[other.collectableType] + other.value;
+            this.ceilResources();
+            other.destroy();
+        }
+    }
+
+    ceilResources() {
+        this.fuel = Math.min(this.fuel, this.fuelMax);
+        this.oxygen = Math.min(this.oxygen, this.oxygenMax);
+        this.battery = Math.min(this.battery, this.batteryMax);
+    }
+
+    constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys) {
+        super(scene.matter.world, x, y, 'player');
+        scene.add.existing(this);
+
         this.fuel = 800.0;
         this.fuelMax = 1000.0;
 
-        this.air = 700.0;
-        this.airMax = 1000.0;
+        this.oxygen = 700.0;
+        this.oxygenMax = 1000.0;
 
-        this.energy = 900.0;
-        this.energyMax = 1000.0;
+        this.battery = 900.0;
+        this.batteryMax = 1000.0;
 
-        this.sprite = scene.matter.add.sprite(x,y,'player');
-        this.sprite.setScale(0.5, 0.5);
-        this.sprite.setFrictionAir(0);
-        this.sprite.setBounce(0.2);
-        this.sprite.setRotation(Math.PI * 1.5);
+        this.setScale(0.5, 0.5);
+        this.setFrictionAir(0);
+        this.setBounce(0.2);
+        this.setRotation(Math.PI * 1.5);
+        this.setMass(100.0);
 
         this.thrusterForward = scene.add.sprite(x,y,'thrust_forward');
         this.thrusterBackward = scene.add.sprite(x,y,'thrust_backward');
         this.thrusterRotateCW = scene.add.sprite(x,y,'thrust_rotate_cw');
         this.thrusterRotateCCW = scene.add.sprite(x,y,'thrust_rotate_ccw');
+        this.thrusterForward.setDepth(2);
+        this.thrusterBackward.setDepth(2);
+        this.thrusterRotateCW.setDepth(2);
+        this.thrusterRotateCCW.setDepth(2);
+
+        this.cursorKeys = cursorKeys;
+
         this.lightmap = scene.add.sprite(x,y,'lightmap');
         this.lightmap.setScale(0.5);
         this.lightmap.setDepth(1);
+        //this.lightmap.setVisible(false);
     }
 
-    update(scene: Scene, time: number, delta: number) {
+    update(time: number, delta: number) {
         const ndelta = delta / 16.0;
-        const cursors = scene.input.keyboard.createCursorKeys();
-        const body = this.sprite.body as any;
+        const body = this.body as any;
         let curAngVel = body.angularVelocity;
-        if (cursors.left.isDown && this.fuel > 0.0) {
-            this.fuel -= ndelta * 1;
+        if (this.cursorKeys.left.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 0.1;
             curAngVel += -0.001 * ndelta;
             this.thrusterRotateCCW.setVisible(true);
         } else {
             this.thrusterRotateCCW.setVisible(false);
         }
 
-        if (cursors.right.isDown && this.fuel > 0.0) {
-            this.fuel -= ndelta * 1;
+        if (this.cursorKeys.right.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 0.1;
             curAngVel -= -0.001 * ndelta;
             this.thrusterRotateCW.setVisible(true);
         } else {
             this.thrusterRotateCW.setVisible(false);
         }
-        this.sprite.setAngularVelocity(curAngVel);
+        this.setAngularVelocity(curAngVel);
 
-        if (cursors.up.isDown && this.fuel > 0.0) {
-            this.fuel -= ndelta * 1;
-            this.sprite.thrust(0.001 * ndelta);
+        if (this.cursorKeys.up.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 0.1;
+            this.thrust(0.01 * ndelta);
             this.thrusterForward.setVisible(true);
         } else {
             this.thrusterForward.setVisible(false);
         }
 
-        if (cursors.down.isDown && this.fuel > 0.0) {
-            this.fuel -= ndelta * 1;
-            this.sprite.thrust(-0.001 * ndelta);
+        if (this.cursorKeys.down.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 0.1;
+            this.thrust(-0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);
         }
 
-        this.air -= 0.01 * ndelta;
-        this.energy -= 0.001 * ndelta;
+        this.oxygen -= 0.01 * ndelta;
+        this.battery -= 0.001 * ndelta;
 
-        this.thrusterForward.x = this.sprite.x;
-        this.thrusterForward.y = this.sprite.y;
-        this.thrusterForward.angle = this.sprite.angle;
+        this.thrusterForward.x = this.x;
+        this.thrusterForward.y = this.y;
+        this.thrusterForward.angle = this.angle;
 
-        this.thrusterBackward.x = this.sprite.x;
-        this.thrusterBackward.y = this.sprite.y;
-        this.thrusterBackward.angle = this.sprite.angle;
+        this.thrusterBackward.x = this.x;
+        this.thrusterBackward.y = this.y;
+        this.thrusterBackward.angle = this.angle;
 
-        this.thrusterRotateCW.x = this.sprite.x;
-        this.thrusterRotateCW.y = this.sprite.y;
-        this.thrusterRotateCW.angle = this.sprite.angle;
+        this.thrusterRotateCW.x = this.x;
+        this.thrusterRotateCW.y = this.y;
+        this.thrusterRotateCW.angle = this.angle;
 
-        this.thrusterRotateCCW.x = this.sprite.x;
-        this.thrusterRotateCCW.y = this.sprite.y;
-        this.thrusterRotateCCW.angle = this.sprite.angle;
+        this.thrusterRotateCCW.x = this.x;
+        this.thrusterRotateCCW.y = this.y;
+        this.thrusterRotateCCW.angle = this.angle;
 
-        this.lightmap.setPosition(this.sprite.x, this.sprite.y);
-        this.lightmap.angle = this.sprite.angle;
+        this.lightmap.setPosition(this.x, this.y);
+        this.lightmap.angle = this.angle;
     }
 }
