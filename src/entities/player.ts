@@ -27,6 +27,14 @@ export class Player extends Physics.Matter.Sprite {
             this[other.collectableType] = this[other.collectableType] + other.value;
             this.ceilResources();
             other.destroy();
+            switch(other.collectableType){
+                case "battery":
+                    break;
+                case "fuel":
+                    break;
+                case "oxygen":
+                    break;
+            }
         }
     }
 
@@ -77,17 +85,17 @@ export class Player extends Physics.Matter.Sprite {
         const ndelta = delta / 16.0;
         const body = this.body as any;
         let curAngVel = body.angularVelocity;
-        if (this.cursorKeys.left.isDown && this.fuel > 0.0) {
+        if ((this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown) && this.fuel > 0.0) {
             this.fuel -= ndelta * 0.1;
-            curAngVel += -0.001 * ndelta;
+            curAngVel += -0.0003 * ndelta;
             this.thrusterRotateCCW.setVisible(true);
         } else {
             this.thrusterRotateCCW.setVisible(false);
         }
 
-        if (this.cursorKeys.right.isDown && this.fuel > 0.0) {
+        if ((this.cursorKeys.right.isDown || this.wasdKeys.E.isDown) && this.fuel > 0.0) {
             this.fuel -= ndelta * 0.1;
-            curAngVel -= -0.001 * ndelta;
+            curAngVel -= -0.0003 * ndelta;
             this.thrusterRotateCW.setVisible(true);
         } else {
             this.thrusterRotateCW.setVisible(false);

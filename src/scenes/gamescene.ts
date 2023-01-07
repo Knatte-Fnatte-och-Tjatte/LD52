@@ -11,6 +11,8 @@ export type WASDKeyMap = {
     A: Phaser.Input.Keyboard.Key,
     S: Phaser.Input.Keyboard.Key,
     D: Phaser.Input.Keyboard.Key,
+    Q: Phaser.Input.Keyboard.Key,
+    E: Phaser.Input.Keyboard.Key,
 }
 
 export class GameScene extends Scene {
@@ -50,7 +52,7 @@ export class GameScene extends Scene {
         const worldWidth = 5000;
         const worldHeight = 5000;
         this.cursorKeys = this.input.keyboard.createCursorKeys();
-        this.wasdKeys = this.input.keyboard.addKeys('W,A,S,D') as WASDKeyMap;
+        this.wasdKeys = this.input.keyboard.addKeys('W,A,S,D,Q,E') as WASDKeyMap;
 
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
