@@ -4,8 +4,15 @@ import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
 import { Collectable, CollectableType } from '../entities/collectable';
 import { GameOverScene } from './gameover';
+import { Asteroid } from '../entities/asteroid';
 
 const SPRITE_COUNT = 20;
+const ASTEROID_SHOWER_INTERVAL = 1.0 * 60.0 * 1000.0;
+
+const normalize = (v:[number, number]) => {
+    const m = Math.max(v[0],v[1]);
+    return [v[0]/m,v[1]/m];
+};
 
 export type WASDKeyMap = {
     W: Phaser.Input.Keyboard.Key,
@@ -19,11 +26,14 @@ export type WASDKeyMap = {
 export class GameScene extends Scene {
     player?: Player;
     lightSources?: GameObjects.Layer;
-    wrecks: Wreckage[];
-    collectables: Collectable[];
     cursorKeys?: Types.Input.Keyboard.CursorKeys;
     wasdKeys?: WASDKeyMap;
+
+    wrecks: Wreckage[];
+    collectables: Collectable[];
+    asteroids: Asteroid[];
     gameOverActive: boolean;
+    lastAsteroidShower: number;
 
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
@@ -32,15 +42,18 @@ export class GameScene extends Scene {
         super(config);
         this.wrecks = [];
         this.collectables = [];
+        this.asteroids = [];
         this.gameOverActive = false;
+        this.lastAsteroidShower = 0;
     }
 
     preload () {
-        this.load.image('light' , 'assets/light.png');
         this.load.image('player', 'assets/player.png');
-        this.load.image('hull', 'assets/hull.png');
         this.load.image('lightmask', 'assets/lightmask.png');
         this.load.image('lightcone', 'assets/lightcone.png');
+
+        this.load.image('asteroid', 'assets/asteroid.png');
+        this.load.image('hull', 'assets/hull.png');
 
         this.load.image('fuel', 'assets/fuel.png');
         this.load.image('oxygen', 'assets/oxygen.png');
@@ -68,26 +81,50 @@ export class GameScene extends Scene {
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
         this.lights.enable();
-        this.player = new Player(this, 640, 360, this.cursorKeys, this.wasdKeys);
+        this.player = new Player(this, 0, 0, this.cursorKeys, this.wasdKeys);
 
         this.cameras.main.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
         this.cameras.main.startFollow(this.player, false, 0.1, 0.1, 0, 0);
+        this.lastAsteroidShower = this.time.now - ASTEROID_SHOWER_INTERVAL * 2;
 
         this.wrecks = [];
-        for(let i=0;i<100;i++){
-            const x = Math.random() * worldWidth;
-            const y = Math.random() * worldHeight;
+        for(let i=0;i<50;i++){
+            const x = (Math.random()-0.5) * worldWidth*2;
+            const y = (Math.random()-0.5) * worldHeight*2;
             this.wrecks.push(new Wreckage(this, x, y));
         }
 
         this.collectables = [];
         const ta:CollectableType[] = ["fuel", "oxygen", "battery"];
         for(let i=0;i<100;i++){
-            const x = Math.random() * worldWidth;
-            const y = Math.random() * worldHeight;
+            const x = (Math.random()-0.5) * worldWidth*2;
+            const y = (Math.random()-0.5) * worldHeight*2;
             const t = ta[(Math.random() * 3)|0];
             const v = Math.random() * 1000.0;
             this.collectables.push(new Collectable(this, x, y, v, t));
+        }
+
+        for(let i=0;i<100;i++){
+            const x = (Math.random()-0.5) * worldWidth*2;
+            const y = (Math.random()-0.5) * worldHeight*2;
+            const vx = (Math.random()-0.5) * 0.2;
+            const vy = (Math.random()-0.5) * 0.2;
+            this.asteroids.push(new Asteroid(this, x, y, vx, vy));
+        }
+    }
+
+    spawnAsteroidShower(){
+        const mdeg = Math.random() * Math.PI*2.0;
+        const px = this.player?.x || 0;
+        const py = this.player?.y || 0;
+
+        for(let i=0;i<50;i++){
+            const deg = mdeg + (Math.random()-0.5) * Math.PI*2.0 * 0.2;
+            const start_x = px + Math.cos(deg) * 5000.0;
+            const start_y = py + Math.sin(deg) * 5000.0;
+            const vx = start_x * -0.01 * (1.0 + ((Math.random() - 0.5)*0.1));
+            const vy = start_y * -0.01 * (1.0 + ((Math.random() - 0.5)*0.1));
+            this.asteroids.push(new Asteroid(this, start_x, start_y, vx, vy));
         }
     }
 
@@ -98,6 +135,18 @@ export class GameScene extends Scene {
                this.scene.run("GameOverScene");
                this.gameOverActive = true;
             }
+        }
+        if(time > this.lastAsteroidShower + ASTEROID_SHOWER_INTERVAL){
+            this.lastAsteroidShower = time;
+            //this.spawnAsteroidShower();
+        }
+
+        if(this.cursorKeys?.space.isDown){
+            if(time > this.lastAsteroidShower){
+
+                this.spawnAsteroidShower();
+            }
+            this.lastAsteroidShower = time + 50.0;
         }
     }
 }

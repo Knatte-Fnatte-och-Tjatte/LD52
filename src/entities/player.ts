@@ -1,5 +1,6 @@
 import { GameObjects, Scene, Physics, Types, Math as PhaserMath } from "phaser";
 import { WASDKeyMap } from "../scenes/gamescene";
+import { Asteroid } from "./asteroid";
 import { Collectable } from "./collectable";
 import { Wreckage } from "./wreckage";
 
@@ -18,6 +19,9 @@ const PLAYER_MASS = 100.0;
 const PLAYER_BOUNCE = 0.2;
 
 const LIGHTCONE_ALPHA = 0.35;
+const START_BATTERY = 900.0;
+const START_OXYGEN = 800.0;
+const START_FUEL = 700.0;
 
 export class Player extends Physics.Matter.Sprite {
     fuel: number;
@@ -65,7 +69,7 @@ export class Player extends Physics.Matter.Sprite {
             }
             other.destroy();
         }
-        if(other instanceof Wreckage){
+        if((other instanceof Wreckage) || (other instanceof Asteroid)){
             this.didCollide = true;
             this.collisionVelocity = new Phaser.Math.Vector2(this.body.velocity.x, this.body.velocity.y);
         }
@@ -82,13 +86,13 @@ export class Player extends Physics.Matter.Sprite {
         scene.add.existing(this);
 
         this.stunned = -1.0;
-        this.fuel = 800.0;
+        this.fuel = START_FUEL;
         this.fuelMax = 1000.0;
 
-        this.oxygen = 700.0;
+        this.oxygen = START_OXYGEN;
         this.oxygenMax = 1000.0;
 
-        this.battery = 900.0;
+        this.battery = START_BATTERY;
         this.batteryMax = 1000.0;
 
         this.isDead = false;
@@ -112,6 +116,7 @@ export class Player extends Physics.Matter.Sprite {
         this.didCollide = false;
 
         this.lightmask = scene.add.sprite(x,y,'lightmask').setScale(0.5).setDepth(1);
+        this.lightmask.setVisible(false);
         this.lightcone = scene.add.sprite(x,y,'lightcone').setScale(0.5).setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
 
         const player = this;
