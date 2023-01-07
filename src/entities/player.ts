@@ -3,15 +3,16 @@ import { Textures, GameObjects, Scene, Physics } from "phaser";
 
 export class Player {
     fuel: number;
-    max_fuel: number;
+    fuelMax: number;
 
     air: number;
-    max_air: number;
+    airMax: number;
 
     energy: number;
-    max_energy: number;
+    energyMax: number;
 
     sprite: Physics.Matter.Sprite;
+    omniLight: GameObjects.Light;
 
     thrusterForward: GameObjects.Sprite;
     thrusterBackward: GameObjects.Sprite;
@@ -20,15 +21,16 @@ export class Player {
 
     constructor (scene:Scene, x:number, y:number) {
         this.fuel = 800.0;
-        this.max_fuel = 1000.0;
+        this.fuelMax = 1000.0;
 
         this.air = 700.0;
-        this.max_air = 1000.0;
+        this.airMax = 1000.0;
 
         this.energy = 900.0;
-        this.max_energy = 1000.0;
+        this.energyMax = 1000.0;
 
         this.sprite = scene.matter.add.sprite(x,y,'player');
+        this.sprite.setScale(0.5, 0.5);
         this.sprite.setFrictionAir(0);
         this.sprite.setBounce(0.2);
         this.sprite.setRotation(Math.PI * 1.5);
@@ -37,6 +39,8 @@ export class Player {
         this.thrusterBackward = scene.add.sprite(x,y,'thrust_backward');
         this.thrusterRotateCW = scene.add.sprite(x,y,'thrust_rotate_cw');
         this.thrusterRotateCCW = scene.add.sprite(x,y,'thrust_rotate_ccw');
+
+        this.omniLight = scene.lights.addLight(x, y, 512, 0xFFFFFF, 3.0);
     }
 
     update(scene: Scene, time: number, delta: number) {
@@ -96,5 +100,6 @@ export class Player {
         this.thrusterRotateCCW.y = this.sprite.y;
         this.thrusterRotateCCW.angle = this.sprite.angle;
 
+        this.omniLight.setPosition(this.sprite.x, this.sprite.y);
     }
 }

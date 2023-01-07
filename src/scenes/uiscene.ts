@@ -37,15 +37,15 @@ export class UIScene extends Scene {
         const player = game.player;
         if(player){
             if(this.fuelbar){
-                this.fuelbar.value = player.fuel / player.max_fuel;
+                this.fuelbar.value = player.fuel / player.fuelMax;
                 this.fuelbar.update(this, time, delta);
             }
             if(this.airbar){
-                this.airbar.value = player.air / player.max_air;
+                this.airbar.value = player.air / player.airMax;
                 this.airbar.update(this, time, delta);
             }
             if(this.energybar){
-                this.energybar.value = player.energy / player.max_energy;
+                this.energybar.value = player.energy / player.energyMax;
                 this.energybar.update(this, time, delta);
             }
         }

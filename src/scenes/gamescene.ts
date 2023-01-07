@@ -1,4 +1,4 @@
-import { Scene, Types } from 'phaser';
+import { GameObjects, Scene, Types } from 'phaser';
 import { Bar } from '../ui/fuelbar';
 import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
@@ -7,7 +7,9 @@ const SPRITE_COUNT = 20;
 
 export class GameScene extends Scene {
     player?: Player;
+    lightSources?: GameObjects.Layer;
     wrecks: Wreckage[];
+
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
         if(!config){config = {};}
@@ -17,6 +19,7 @@ export class GameScene extends Scene {
     }
 
     preload () {
+        this.load.image('light' , 'assets/light.png');
         this.load.image('bg', 'assets/background.png');
         this.load.image('player', 'assets/player.png');
         this.load.image('hull', 'assets/hull.png');
@@ -32,8 +35,10 @@ export class GameScene extends Scene {
         const worldHeight = 5000;
 
         const bg = this.add.tileSprite(0, 0, worldWidth*2, worldWidth*2, 'bg');
+        bg.setPipeline("Light2D");
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
+        this.lights.enable();
         this.player = new Player(this, 640, 360);
 
         this.cameras.main.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
