@@ -3,6 +3,7 @@ import { Bar } from '../ui/fuelbar';
 import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
 import { Collectable, CollectableType } from '../entities/collectable';
+import { GameOverScene } from './gameover';
 
 const SPRITE_COUNT = 20;
 
@@ -22,6 +23,7 @@ export class GameScene extends Scene {
     collectables: Collectable[];
     cursorKeys?: Types.Input.Keyboard.CursorKeys;
     wasdKeys?: WASDKeyMap;
+    gameOverActive: boolean;
 
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
@@ -30,6 +32,7 @@ export class GameScene extends Scene {
         super(config);
         this.wrecks = [];
         this.collectables = [];
+        this.gameOverActive = false;
     }
 
     preload () {
@@ -47,7 +50,7 @@ export class GameScene extends Scene {
         this.load.image('thrust_backward', 'assets/thrust_backward.png');
         this.load.image('thrust_forward', 'assets/thrust_forward.png');
 
-        this.load.audio("fuel_change", "sfx/battery_change.mp3");
+        this.load.audio("fuel_change", "sfx/fuel_change.mp3");
         this.load.audio("oxygen_change", "sfx/oxygen_change.mp3");
         this.load.audio("battery_change", "sfx/battery_change.mp3");
     }
@@ -57,6 +60,7 @@ export class GameScene extends Scene {
         const worldHeight = 5000;
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.wasdKeys = this.input.keyboard.addKeys('W,A,S,D,Q,E') as WASDKeyMap;
+        this.gameOverActive = false;
 
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
@@ -82,19 +86,15 @@ export class GameScene extends Scene {
             const v = Math.random() * 1000.0;
             this.collectables.push(new Collectable(this, x, y, v, t));
         }
-
-        this.matter.world.on('collisionstart', (e: Physics.Matter.Events.CollisionStartEvent, a:any, b:any) => {
-            const ag = a.gameObject;
-            const bg = b.gameObject;
-            if(ag instanceof Player){
-                ag.collideWith(bg);
-            } else if (bg instanceof Player) {
-                bg.collideWith(ag);
-            }
-        });
     }
 
     update(time: number, delta: number) {
         this.player?.update(time, delta);
+        if(this.player?.isDead){
+            if(!this.gameOverActive){
+               this.scene.run("GameOverScene");
+               this.gameOverActive = true;
+            }
+        }
     }
 }

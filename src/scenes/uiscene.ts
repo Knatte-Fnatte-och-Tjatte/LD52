@@ -26,7 +26,6 @@ export class UIScene extends Scene {
     }
 
     create () {
-        const game = this.scene.get('GameScene');
         this.airbar = new Bar(this, 'bar_air', 16);
         this.fuelbar = new Bar(this, 'bar_fuel', 40);
         this.energybar = new Bar(this, 'bar_energy', 64);

@@ -3,6 +3,7 @@ import './style.css';
 import { Game, Types } from 'phaser';
 import { GameScene } from './scenes/gamescene';
 import { UIScene } from './scenes/uiscene';
+import { GameOverScene } from './scenes/gameover';
 
 const main = () => {
     const config: Types.Core.GameConfig = {
@@ -22,7 +23,7 @@ const main = () => {
                 debug: false
             }
         },
-        scene: [ GameScene, UIScene ]
+        scene: [ GameScene, UIScene, GameOverScene ]
     };
     const game = new Game(config);
 };

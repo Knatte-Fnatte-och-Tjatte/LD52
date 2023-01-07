@@ -1,6 +1,7 @@
 import { GameObjects, Scene, Physics, Types } from "phaser";
 import { WASDKeyMap } from "../scenes/gamescene";
 import { Collectable } from "./collectable";
+import { Wreckage } from "./wreckage";
 
 export class Player extends Physics.Matter.Sprite {
     fuel: number;
@@ -14,6 +15,8 @@ export class Player extends Physics.Matter.Sprite {
 
     lightmap: GameObjects.Sprite;
 
+    isDead: boolean;
+
     thrusterForward: GameObjects.Sprite;
     thrusterBackward: GameObjects.Sprite;
     thrusterRotateCW: GameObjects.Sprite;
@@ -22,7 +25,8 @@ export class Player extends Physics.Matter.Sprite {
     cursorKeys: Types.Input.Keyboard.CursorKeys;
     wasdKeys: WASDKeyMap;
 
-    collideWith(other: any) {
+    collideWith(e:Types.Physics.Matter.MatterCollisionData, other: any) {
+        if(this.isDead){return;}
         if(other instanceof Collectable){
             this[other.collectableType] = this[other.collectableType] + other.value;
             this.ceilResources();
@@ -38,6 +42,9 @@ export class Player extends Physics.Matter.Sprite {
                     break;
             }
             other.destroy();
+        }
+        if(other instanceof Wreckage){
+            this.isDead = true;
         }
     }
 
@@ -59,6 +66,8 @@ export class Player extends Physics.Matter.Sprite {
 
         this.battery = 900.0;
         this.batteryMax = 1000.0;
+
+        this.isDead = false;
 
         this.setScale(0.5, 0.5);
         this.setFrictionAir(0);
@@ -82,13 +91,22 @@ export class Player extends Physics.Matter.Sprite {
         this.lightmap.setScale(0.5);
         this.lightmap.setDepth(1);
         //this.lightmap.setVisible(false);
+
+        const player = this;
+        this.setOnCollide((e:Types.Physics.Matter.MatterCollisionData) => {
+            if(player === e.bodyA.gameObject){
+                player.collideWith(e, e.bodyB.gameObject);
+            } else {
+                player.collideWith(e, e.bodyA.gameObject);
+            }
+        });
     }
 
-    update(time: number, delta: number) {
+    updateControls(delta: number) {
         const ndelta = delta / 16.0;
         const body = this.body as any;
         let curAngVel = body.angularVelocity;
-        if ((this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown) && this.fuel > 0.0) {
+        if ((this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown)) {
             this.fuel -= ndelta * 0.4;
             curAngVel += -0.0003 * ndelta;
             this.thrusterRotateCCW.setVisible(true);
@@ -96,7 +114,7 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterRotateCCW.setVisible(false);
         }
 
-        if ((this.cursorKeys.right.isDown || this.wasdKeys.E.isDown) && this.fuel > 0.0) {
+        if ((this.cursorKeys.right.isDown || this.wasdKeys.E.isDown)) {
             this.fuel -= ndelta * 0.4;
             curAngVel -= -0.0003 * ndelta;
             this.thrusterRotateCW.setVisible(true);
@@ -105,7 +123,7 @@ export class Player extends Physics.Matter.Sprite {
         }
         this.setAngularVelocity(curAngVel);
 
-        if ((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown) && this.fuel > 0.0) {
+        if ((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown)) {
             this.fuel -= ndelta * 0.4;
             this.thrust(0.01 * ndelta);
             this.thrusterForward.setVisible(true);
@@ -113,7 +131,7 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterForward.setVisible(false);
         }
 
-        if ((this.cursorKeys.down.isDown || this.wasdKeys.S.isDown) && this.fuel > 0.0) {
+        if ((this.cursorKeys.down.isDown || this.wasdKeys.S.isDown)) {
             this.fuel -= ndelta * 0.4;
             this.thrustBack(0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
@@ -121,7 +139,7 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterBackward.setVisible(false);
         }
 
-        if (this.wasdKeys.A.isDown && this.fuel > 0.0) {
+        if (this.wasdKeys.A.isDown) {
             this.fuel -= ndelta * 0.4;
             this.thrustLeft(0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
@@ -129,17 +147,16 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterBackward.setVisible(false);
         }
 
-        if (this.wasdKeys.D.isDown && this.fuel > 0.0) {
+        if (this.wasdKeys.D.isDown) {
             this.fuel -= ndelta * 0.4;
             this.thrustRight(0.01 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);
         }
+    }
 
-        this.oxygen -= 0.04 * ndelta;
-        this.battery -= 0.004 * ndelta;
-
+    updateChildren() {
         this.thrusterForward.x = this.x;
         this.thrusterForward.y = this.y;
         this.thrusterForward.angle = this.angle;
@@ -158,5 +175,24 @@ export class Player extends Physics.Matter.Sprite {
 
         this.lightmap.setPosition(this.x, this.y);
         this.lightmap.angle = this.angle;
+    }
+
+    update(time: number, delta: number) {
+        const ndelta = delta / 16.0;
+        this.updateChildren();
+        if((this.fuel > 0.0) && !this.isDead){
+            this.updateControls(delta);
+        } else {
+            this.thrusterForward.setVisible(false);
+            this.thrusterBackward.setVisible(false);
+            this.thrusterRotateCW.setVisible(false);
+            this.thrusterRotateCCW.setVisible(false);
+        }
+        this.battery -= 0.004 * ndelta;
+
+        this.oxygen -= 0.04 * ndelta;
+        if(this.oxygen <= 0){
+            this.isDead = true;
+        }
     }
 }
