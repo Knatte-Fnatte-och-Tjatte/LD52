@@ -18,7 +18,6 @@ export class Player {
         let curAngVel = body.angularVelocity;
         if (cursors.left.isDown) {
             curAngVel += -0.002 * ndelta;
-
         } else if (cursors.right.isDown) {
             curAngVel -= -0.002 * ndelta;
         }
