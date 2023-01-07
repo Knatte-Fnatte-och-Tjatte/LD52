@@ -2,6 +2,15 @@ import { Body } from "matter";
 import { Textures, GameObjects, Scene, Physics } from "phaser";
 
 export class Player {
+    fuel: number;
+    max_fuel: number;
+
+    air: number;
+    max_air: number;
+
+    energy: number;
+    max_energy: number;
+
     sprite: Physics.Matter.Sprite;
 
     thrusterForward: GameObjects.Sprite;
@@ -10,6 +19,15 @@ export class Player {
     thrusterRotateCCW: GameObjects.Sprite;
 
     constructor (scene:Scene, x:number, y:number) {
+        this.fuel = 800.0;
+        this.max_fuel = 1000.0;
+
+        this.air = 700.0;
+        this.max_air = 1000.0;
+
+        this.energy = 900.0;
+        this.max_energy = 1000.0;
+
         this.sprite = scene.matter.add.sprite(x,y,'player');
         this.sprite.setFrictionAir(0);
         this.sprite.setBounce(0.2);
@@ -26,34 +44,41 @@ export class Player {
         const cursors = scene.input.keyboard.createCursorKeys();
         const body = this.sprite.body as any;
         let curAngVel = body.angularVelocity;
-        if (cursors.left.isDown) {
-            curAngVel += -0.002 * ndelta;
+        if (cursors.left.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 1;
+            curAngVel += -0.001 * ndelta;
             this.thrusterRotateCCW.setVisible(true);
         } else {
             this.thrusterRotateCCW.setVisible(false);
         }
 
-        if (cursors.right.isDown) {
-            curAngVel -= -0.002 * ndelta;
+        if (cursors.right.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 1;
+            curAngVel -= -0.001 * ndelta;
             this.thrusterRotateCW.setVisible(true);
         } else {
             this.thrusterRotateCW.setVisible(false);
         }
         this.sprite.setAngularVelocity(curAngVel);
 
-        if (cursors.up.isDown) {
-            this.sprite.thrust(0.002 * ndelta);
+        if (cursors.up.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 1;
+            this.sprite.thrust(0.001 * ndelta);
             this.thrusterForward.setVisible(true);
         } else {
             this.thrusterForward.setVisible(false);
         }
 
-        if (cursors.down.isDown) {
-            this.sprite.thrust(-0.002 * ndelta);
+        if (cursors.down.isDown && this.fuel > 0.0) {
+            this.fuel -= ndelta * 1;
+            this.sprite.thrust(-0.001 * ndelta);
             this.thrusterBackward.setVisible(true);
         } else {
             this.thrusterBackward.setVisible(false);
         }
+
+        this.air -= 0.01 * ndelta;
+        this.energy -= 0.001 * ndelta;
 
         this.thrusterForward.x = this.sprite.x;
         this.thrusterForward.y = this.sprite.y;

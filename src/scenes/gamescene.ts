@@ -1,15 +1,17 @@
 import { Scene, Types } from 'phaser';
+import { Bar } from '../ui/fuelbar';
 import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
 
 const SPRITE_COUNT = 20;
 
-export class MainGame extends Scene {
-    camera: Types.Cameras.Controls;
+export class GameScene extends Scene {
     player?: Player;
     wrecks: Wreckage[];
 
-    constructor (config: string | Phaser.Types.Scenes.SettingsConfig) {
+    constructor (config: Phaser.Types.Scenes.SettingsConfig) {
+        if(!config){config = {};}
+        config.key = 'GameScene';
         super(config);
         this.wrecks = [];
     }
@@ -29,17 +31,16 @@ export class MainGame extends Scene {
         const worldWidth = 5000;
         const worldHeight = 5000;
 
-        const width = window.innerWidth;
-        const height = window.innerHeight;
         const bg = this.add.tileSprite(0, 0, worldWidth*2, worldWidth*2, 'bg');
-        this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth, worldHeight);
+        this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
+
         this.player = new Player(this, 640, 360);
 
         this.cameras.main.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
         this.cameras.main.startFollow(this.player.sprite, false, 0.1, 0.1, 0, 0);
 
         this.wrecks = [];
-        for(let i=0;i<50;i++){
+        for(let i=0;i<100;i++){
             const x = Math.random() * worldWidth;
             const y = Math.random() * worldHeight;
             this.wrecks.push(new Wreckage(this, x, y));

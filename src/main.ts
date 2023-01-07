@@ -1,7 +1,8 @@
 import './style.css';
 
 import { Game, Types } from 'phaser';
-import { MainGame } from './scenes/maingame';
+import { GameScene } from './scenes/gamescene';
+import { UIScene } from './scenes/uiscene';
 
 const main = () => {
     const config: Types.Core.GameConfig = {
@@ -21,7 +22,7 @@ const main = () => {
                 debug: false
             }
         },
-        scene: [ MainGame ]
+        scene: [ GameScene, UIScene ]
     };
     const game = new Game(config);
 };
