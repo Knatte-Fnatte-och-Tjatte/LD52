@@ -1,12 +1,49 @@
 {
-    "activeFile": "",
+    "activeFile": "public/maps/ship.tmj",
     "expandedProjectPaths": [
+        ".",
+        "public",
+        "public/maps"
     ],
     "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "public/maps/karteship.tmj": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1540,
+                "y": 1476
+            }
+        },
+        "public/maps/karteship.tmj#ship": {
+            "scaleInDock": 1
+        },
+        "public/maps/ship.tmj": {
+            "scale": 0.125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -1888,
+                "y": 348
+            }
+        },
+        "public/maps/ship.tmj#ship": {
+            "scaleInDock": 1
+        },
+        "ship.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
     },
+    "map.lastUsedFormat": "json",
     "openFiles": [
+        "public/maps/ship.tmj"
     ],
     "project": "ld52.tiled-project",
     "recentFiles": [
+        "public/maps/karteship.tmj",
+        "public/maps/ship.tmj",
+        "ship.tsx"
     ]
 }
