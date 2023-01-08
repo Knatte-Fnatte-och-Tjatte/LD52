@@ -80,6 +80,7 @@ export class GameScene extends Scene {
         this.load.audio("plasma_death", "sfx/plasma_death.mp3");
         this.load.audio("fuel_change", "sfx/fuel_change.mp3");
         this.load.audio("oxygen_change", "sfx/oxygen_change.mp3");
+        this.load.audio("ambiance", "sfx/ambiance.mp3");
     }
 
     create () {
