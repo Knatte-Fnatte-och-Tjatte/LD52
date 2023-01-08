@@ -48,7 +48,7 @@ export class GameScene extends Scene {
     }
 
     preload () {
-        this.load.tilemapTiledJSON('ship', 'maps/ship.tmj');
+        this.load.tilemapTiledJSON('ship', 'maps/karteship.tmj');
         this.load.spritesheet('ship', 'assets/tilemap.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.image('player', 'assets/player.png');
@@ -57,6 +57,10 @@ export class GameScene extends Scene {
 
         this.load.image('plasma_conduit', 'assets/plasma_conduit.png');
         this.load.spritesheet('plasma_glow', 'assets/plasma_glow.png', { frameWidth: 32, frameHeight: 32});
+
+        this.load.image('plasma_conduit_horiz', 'assets/plasma_conduit_horiz.png');
+        this.load.spritesheet('plasma_glow_horiz', 'assets/plasma_glow_horiz.png', { frameWidth: 32, frameHeight: 32});
+
         this.load.spritesheet('plasma_tile_glow', 'assets/plasma_tile_glow.png', { frameWidth: 64, frameHeight: 64});
 
         this.load.image('asteroid', 'assets/asteroid.png');
@@ -81,6 +85,7 @@ export class GameScene extends Scene {
 
     create () {
         this.anims.create({key: 'plasma_glow_flicker', frames: 'plasma_glow', frameRate:24, repeat:-1,});
+        this.anims.create({key: 'plasma_glow_horiz_flicker', frames: 'plasma_glow_horiz', frameRate:24, repeat:-1,});
         this.anims.create({key: 'plasma_tile_glow_flicker', frames: 'plasma_tile_glow', frameRate:8, repeat:-1,});
         const worldWidth = 5000;
         const worldHeight = 5000;
@@ -132,8 +137,11 @@ export class GameScene extends Scene {
         if(this.map.objects[0]?.objects){
             for(const object of this.map.objects[0].objects){
                 switch(object.gid||0){
+                    case 58:
+                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), true));
+                        break;
                     case 59:
-                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0)));
+                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), false));
                         break;
                     case 60: {
                         const vx = (Math.random() - 0.5) * 0.01;
