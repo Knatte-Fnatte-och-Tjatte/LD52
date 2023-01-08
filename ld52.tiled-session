@@ -1,49 +1,12 @@
 {
-    "Map/SizeTest": {
-        "height": 4300,
-        "width": 2
-    },
-    "activeFile": "public/maps/ship.tmj",
+    "activeFile": "",
     "expandedProjectPaths": [
-        "public/maps",
-        ".",
-        "public"
     ],
     "fileStates": {
-        "": {
-            "scaleInDock": 1
-        },
-        "public/maps/ship.tmj": {
-            "scale": 1.5,
-            "selectedLayer": 1,
-            "viewCenter": {
-                "x": 530.6666666666666,
-                "y": 360.66666666666663
-            }
-        },
-        "public/maps/ship.tmj#ship": {
-            "scaleInDock": 1
-        },
-        "ship.tsx": {
-            "scaleInDock": 1,
-            "scaleInEditor": 1
-        }
     },
-    "last.imagePath": "/home/benny/src/LD52/public/assets",
-    "map.height": 100,
-    "map.lastUsedFormat": "json",
-    "map.layerDataFormat": null,
-    "map.width": 100,
     "openFiles": [
-        "ship.tsx",
-        "public/maps/ship.tmj"
     ],
     "project": "ld52.tiled-project",
-    "property.type": "bool",
     "recentFiles": [
-        "ship.tsx",
-        "public/maps/ship.tmj"
-    ],
-    "tileset.embedInMap": true,
-    "tileset.lastUsedFormat": "tsx"
+    ]
 }
