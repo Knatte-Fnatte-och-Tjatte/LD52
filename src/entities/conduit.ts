@@ -10,7 +10,7 @@ export class Conduit extends Physics.Matter.Sprite {
             super(scene.matter.world, x, y, 'plasma_conduit');
             this.glow = scene.add.sprite(x,y,'plasma_glow').setDepth(2).play('plasma_glow_flicker');
         } else {
-            super(scene.matter.world, x, y, 'plasma_conduit_horiz');
+            super(scene.matter.world, x, y, 'plasma_conduit');
             this.glow = scene.add.sprite(x,y,'plasma_glow_horiz').setDepth(2).play('plasma_glow_horiz_flicker');
         }
         this.scene.add.existing(this);

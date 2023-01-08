@@ -48,7 +48,7 @@ export class GameScene extends Scene {
     }
 
     preload () {
-        this.load.tilemapTiledJSON('ship', 'maps/karteship.tmj');
+        this.load.tilemapTiledJSON('ship', 'maps/ship.tmj');
         this.load.spritesheet('ship', 'assets/tilemap.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.image('player', 'assets/player.png');
@@ -57,8 +57,6 @@ export class GameScene extends Scene {
 
         this.load.image('plasma_conduit', 'assets/plasma_conduit.png');
         this.load.spritesheet('plasma_glow', 'assets/plasma_glow.png', { frameWidth: 32, frameHeight: 32});
-
-        this.load.image('plasma_conduit_horiz', 'assets/plasma_conduit_horiz.png');
         this.load.spritesheet('plasma_glow_horiz', 'assets/plasma_glow_horiz.png', { frameWidth: 32, frameHeight: 32});
 
         this.load.spritesheet('plasma_tile_glow', 'assets/plasma_tile_glow.png', { frameWidth: 64, frameHeight: 64});

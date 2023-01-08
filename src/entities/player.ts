@@ -83,6 +83,7 @@ export class Player extends Physics.Matter.Sprite {
     constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys, wasdKeys: WASDKeyMap) {
         super(scene.matter.world, x, y, 'player');
         scene.add.existing(this);
+        this.setBody({type: 'circle', radius: 36});
 
         this.stunned = -1.0;
         this.fuel = START_FUEL;
@@ -93,8 +94,10 @@ export class Player extends Physics.Matter.Sprite {
 
         this.isDead = false;
 
+
         this.setScale(0.5, 0.5);
         this.setFrictionAir(0);
+        this.setFrictionStatic(0.1);
         this.setBounce(PLAYER_BOUNCE);
         this.setRotation(Math.PI * 0.5);
         this.setMass(PLAYER_MASS);
