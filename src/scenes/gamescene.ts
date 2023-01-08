@@ -4,6 +4,7 @@ import { Wreckage } from '../entities/wreckage';
 import { Collectable, CollectableType } from '../entities/collectable';
 import { Asteroid } from '../entities/asteroid';
 import { Conduit } from '../entities/conduit';
+import { TileConduit } from '../entities/tileConduit';
 
 const ASTEROID_SHOWER_INTERVAL = 1.0 * 60.0 * 1000.0;
 
@@ -47,7 +48,7 @@ export class GameScene extends Scene {
     }
 
     preload () {
-        this.load.tilemapTiledJSON('ship', 'maps/karteship.tmj');
+        this.load.tilemapTiledJSON('ship', 'maps/ship.tmj');
         this.load.spritesheet('ship', 'assets/tilemap.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.image('player', 'assets/player.png');
@@ -80,6 +81,7 @@ export class GameScene extends Scene {
 
     create () {
         this.anims.create({key: 'plasma_glow_flicker', frames: 'plasma_glow', frameRate:24, repeat:-1,});
+        this.anims.create({key: 'plasma_tile_glow_flicker', frames: 'plasma_tile_glow', frameRate:8, repeat:-1,});
         const worldWidth = 5000;
         const worldHeight = 5000;
         this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -112,15 +114,17 @@ export class GameScene extends Scene {
             const vy = (Math.random()-0.5) * 0.2;
             this.asteroids.push(new Asteroid(this, x, y, vx, vy));
         }
-
+        const that = this;
         this.scene.run("UIScene");
 
         this.map = this.add.tilemap('ship');
         const tiles = this.map.addTilesetImage('ship');
         const layer = this.map.createLayer(this.map.layers[0].name, tiles);
         layer.forEachTile(tile => {
-            const tileWorldPos = layer.tileToWorldXY(tile.x, tile.y);
-            console.log(tile.index)
+            if(tile.index == 18){
+                const tileWorldPos = layer.tileToWorldXY(tile.x, tile.y);
+                const tc = new TileConduit(that, tileWorldPos.x + 16, tileWorldPos.y + 16)
+            }
         });
 
         layer.setCollisionByProperty({ collides: true });

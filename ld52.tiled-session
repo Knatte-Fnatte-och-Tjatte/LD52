@@ -41,6 +41,7 @@
         "public/maps/ship.tmj"
     ],
     "project": "ld52.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
         "public/maps/karteship.tmj",
         "public/maps/ship.tmj",

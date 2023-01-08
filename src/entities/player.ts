@@ -61,14 +61,17 @@ export class Player extends Physics.Matter.Sprite {
                     break;
             }
             other.destroy();
-        }
-        if((other instanceof Wreckage) || (other instanceof Asteroid)){
+        } else if((other instanceof Wreckage) || (other instanceof Asteroid)){
             this.didCollide = true;
             this.collisionVelocity = new Phaser.Math.Vector2(this.body.velocity.x, this.body.velocity.y);
-        }
-        if(other instanceof Conduit){
+        } else if(other instanceof Conduit){
             this.isDead = true;
             this.scene.sound.add('plasma_death').play();
+        } else if(other.tile) {
+            if(other?.tile?.properties?.kills){
+                this.isDead = true;
+                this.scene.sound.add('plasma_death').play();
+            }
         }
     }
 
