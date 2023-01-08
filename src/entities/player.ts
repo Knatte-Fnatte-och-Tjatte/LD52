@@ -9,7 +9,6 @@ const TURN_RATE = 0.0003;
 const ACCELERATION_RATE = 0.01;
 
 const OXYGEN_CONSUMPTION_RATE = 0.04;
-const ENERGY_CONSUMPTION_RATE = 0.004;
 
 const STUN_DURATION_MS = 5000.0;
 const COLLISION_STUN_THRESHOLD = 3.0;
@@ -19,7 +18,6 @@ const PLAYER_MASS = 100.0;
 const PLAYER_BOUNCE = 0.2;
 
 const LIGHTCONE_ALPHA = 0.35;
-const START_BATTERY = 900.0;
 const START_OXYGEN = 800.0;
 const START_FUEL = 700.0;
 
@@ -29,9 +27,6 @@ export class Player extends Physics.Matter.Sprite {
 
     oxygen: number;
     oxygenMax: number;
-
-    battery: number;
-    batteryMax: number;
 
     lightmask: GameObjects.Sprite;
     lightcone: GameObjects.Sprite;
@@ -57,9 +52,6 @@ export class Player extends Physics.Matter.Sprite {
             this[other.collectableType] = this[other.collectableType] + other.value;
             this.ceilResources();
             switch(other.collectableType){
-                case "battery":
-                    this.scene.sound.add('battery_change').play();
-                    break;
                 case "fuel":
                     this.scene.sound.add('fuel_change').play();
                     break;
@@ -78,7 +70,6 @@ export class Player extends Physics.Matter.Sprite {
     ceilResources() {
         this.fuel = Math.min(this.fuel, this.fuelMax);
         this.oxygen = Math.min(this.oxygen, this.oxygenMax);
-        this.battery = Math.min(this.battery, this.batteryMax);
     }
 
     constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys, wasdKeys: WASDKeyMap) {
@@ -91,9 +82,6 @@ export class Player extends Physics.Matter.Sprite {
 
         this.oxygen = START_OXYGEN;
         this.oxygenMax = 1000.0;
-
-        this.battery = START_BATTERY;
-        this.batteryMax = 1000.0;
 
         this.isDead = false;
 
@@ -215,7 +203,6 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterRotateCW.setVisible(false);
             this.thrusterRotateCCW.setVisible(false);
         }
-        this.battery -= ENERGY_CONSUMPTION_RATE * ndelta;
 
         this.oxygen -= OXYGEN_CONSUMPTION_RATE * ndelta;
         if(this.oxygen <= 0){

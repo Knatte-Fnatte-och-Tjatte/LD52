@@ -39,8 +39,10 @@ export class MainMenuScene extends Scene {
         const startButton = this.add.image(1280/2, 720 - 128, 'button_start');
         const that = this;
         startButton.setInteractive().on("pointerdown", () => {
+            that.scene.run("UIScene");
             that.scene.switch("GameScene");
         });
+        that.scene.run("UIScene");
         that.scene.switch("GameScene");
     }
 

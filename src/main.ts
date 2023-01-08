@@ -18,10 +18,11 @@ const main = () => {
         physics: {
             default: 'matter',
             matter: {
+                enableSleeping: true,
                 gravity: {
                     y: 0
                 },
-                debug: false
+                debug: true
             }
         },
         scene: [ MainMenuScene, GameScene, UIScene, GameOverScene ]

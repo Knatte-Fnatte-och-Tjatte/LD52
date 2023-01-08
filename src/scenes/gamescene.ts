@@ -73,13 +73,6 @@ export class GameScene extends Scene {
     }
 
     create () {
-        this.map = this.add.tilemap('ship');
-        const tiles = this.map.addTilesetImage('ship');
-        const layer = this.map.createLayer(this.map.layers[0].name, tiles);
-
-        layer.setCollisionByProperty({ collides: true });
-        this.matter.world.convertTilemapLayer(layer);
-
         const worldWidth = 5000;
         const worldHeight = 5000;
         this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -93,15 +86,15 @@ export class GameScene extends Scene {
         this.lastAsteroidShower = this.time.now - ASTEROID_SHOWER_INTERVAL * 2;
 
         this.wrecks = [];
-        for(let i=0;i<50;i++){
+        for(let i=0;i<10;i++){
             const x = (Math.random()-0.5) * worldWidth*2;
             const y = (Math.random()-0.5) * worldHeight*2;
             this.wrecks.push(new Wreckage(this, x, y));
         }
 
         this.collectables = [];
-        const ta:CollectableType[] = ["fuel", "oxygen", "battery"];
-        for(let i=0;i<100;i++){
+        const ta:CollectableType[] = ["fuel", "oxygen"];
+        for(let i=0;i<10;i++){
             const x = (Math.random()-0.5) * worldWidth*2;
             const y = (Math.random()-0.5) * worldHeight*2;
             const t = ta[(Math.random() * 3)|0];
@@ -109,7 +102,7 @@ export class GameScene extends Scene {
             this.collectables.push(new Collectable(this, x, y, v, t));
         }
 
-        for(let i=0;i<100;i++){
+        for(let i=0;i<10;i++){
             const x = (Math.random()-0.5) * worldWidth*2;
             const y = (Math.random()-0.5) * worldHeight*2;
             const vx = (Math.random()-0.5) * 0.2;
@@ -119,18 +112,33 @@ export class GameScene extends Scene {
 
         this.scene.run("UIScene");
 
+        this.map = this.add.tilemap('ship');
+        const tiles = this.map.addTilesetImage('ship');
+        const layer = this.map.createLayer(this.map.layers[0].name, tiles);
+
+        layer.setCollisionByProperty({ collides: true });
+        this.matter.world.convertTilemapLayer(layer);
         for(const object of this.map.objects[0].objects){
-            if(object.gid == 21){
-                this.player = new Player(this, (object.x||0), (object.y||0), this.cursorKeys, this.wasdKeys);
-            }
-            if(object.gid == 20){
-                this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "battery"));
-            }
-            if(object.gid == 19){
-                this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "fuel"));
-            }
-            if(object.gid == 18){
-                this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "oxygen"));
+            switch(object.gid||0){
+                case 18:
+                    this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "oxygen"));
+                    break;
+                case 19:
+                    this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "fuel"));
+                    break;
+                case 20: {
+                    const vx = (Math.random() - 0.5) * 0.01;
+                    const vy = (Math.random() - 0.5) * 0.01;
+                    this.asteroids.push(new Asteroid(this, (object.x||0), (object.y || 0), vx ,vy));
+                    break;
+                }
+                case 21:
+                    this.player = new Player(this, (object.x||0), (object.y||0), this.cursorKeys, this.wasdKeys);
+                    break;
+                case 22: {
+                    this.wrecks.push(new Wreckage(this, (object.x||0), (object.y || 0)));
+                    break;
+                }
             }
         }
         if(!this.player){
