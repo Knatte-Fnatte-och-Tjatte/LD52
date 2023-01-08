@@ -138,10 +138,10 @@ export class GameScene extends Scene {
             for(const object of this.map.objects[0].objects){
                 switch(object.gid||0){
                     case 58:
-                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), true));
+                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), false));
                         break;
                     case 59:
-                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), false));
+                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), true));
                         break;
                     case 60: {
                         const vx = (Math.random() - 0.5) * 0.01;
