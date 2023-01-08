@@ -1,0 +1,27 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "/home/benny/src/LD52/public/assets",
+    "map.height": 100,
+    "map.lastUsedFormat": "json",
+    "map.layerDataFormat": null,
+    "map.width": 100,
+    "openFiles": [
+    ],
+    "project": "ld52.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx"
+}

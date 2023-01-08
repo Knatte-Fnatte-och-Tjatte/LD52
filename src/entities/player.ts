@@ -100,7 +100,7 @@ export class Player extends Physics.Matter.Sprite {
         this.setScale(0.5, 0.5);
         this.setFrictionAir(0);
         this.setBounce(PLAYER_BOUNCE);
-        this.setRotation(Math.PI * 1.5);
+        this.setRotation(Math.PI * 0.5);
         this.setMass(PLAYER_MASS);
 
         this.thrusterForward = scene.add.sprite(x,y,'thrust_forward').setDepth(2).setScale(0.5).setVisible(false);

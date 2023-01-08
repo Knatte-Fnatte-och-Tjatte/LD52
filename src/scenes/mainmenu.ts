@@ -41,6 +41,7 @@ export class MainMenuScene extends Scene {
         startButton.setInteractive().on("pointerdown", () => {
             that.scene.switch("GameScene");
         });
+        that.scene.switch("GameScene");
     }
 
     update(time: number, delta: number) {

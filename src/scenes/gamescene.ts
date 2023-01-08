@@ -1,4 +1,4 @@
-import { GameObjects, Scene, Types } from 'phaser';
+import { GameObjects, Scene, Tilemaps, Types } from 'phaser';
 import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
 import { Collectable, CollectableType } from '../entities/collectable';
@@ -31,6 +31,7 @@ export class GameScene extends Scene {
     asteroids: Asteroid[];
     gameOverActive: boolean;
     lastAsteroidShower: number;
+    map?: Tilemaps.Tilemap;
 
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
@@ -45,6 +46,9 @@ export class GameScene extends Scene {
     }
 
     preload () {
+        this.load.tilemapTiledJSON('ship', 'maps/ship.tmj');
+        this.load.image('ship', 'assets/tilemap.png');
+
         this.load.image('player', 'assets/player.png');
         this.load.image('lightmask', 'assets/lightmask.png');
         this.load.image('lightcone', 'assets/lightcone.png');
@@ -69,6 +73,13 @@ export class GameScene extends Scene {
     }
 
     create () {
+        this.map = this.add.tilemap('ship');
+        const tiles = this.map.addTilesetImage('ship');
+        const layer = this.map.createLayer(this.map.layers[0].name, tiles);
+
+        layer.setCollisionByProperty({ collides: true });
+        this.matter.world.convertTilemapLayer(layer);
+
         const worldWidth = 5000;
         const worldHeight = 5000;
         this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -78,10 +89,7 @@ export class GameScene extends Scene {
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
         this.lights.enable();
-        this.player = new Player(this, 0, 0, this.cursorKeys, this.wasdKeys);
 
-        this.cameras.main.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
-        this.cameras.main.startFollow(this.player, false, 0.1, 0.1, 0, 0);
         this.lastAsteroidShower = this.time.now - ASTEROID_SHOWER_INTERVAL * 2;
 
         this.wrecks = [];
@@ -110,6 +118,26 @@ export class GameScene extends Scene {
         }
 
         this.scene.run("UIScene");
+
+        for(const object of this.map.objects[0].objects){
+            if(object.gid == 21){
+                this.player = new Player(this, (object.x||0), (object.y||0), this.cursorKeys, this.wasdKeys);
+            }
+            if(object.gid == 20){
+                this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "battery"));
+            }
+            if(object.gid == 19){
+                this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "fuel"));
+            }
+            if(object.gid == 18){
+                this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "oxygen"));
+            }
+        }
+        if(!this.player){
+            this.player = new Player(this, 0, 0, this.cursorKeys, this.wasdKeys);
+        }
+        this.cameras.main.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
+        this.cameras.main.startFollow(this.player, false, 0.1, 0.1, 0, 0);
     }
 
     spawnAsteroidShower(){
