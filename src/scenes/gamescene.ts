@@ -3,6 +3,7 @@ import { Player } from '../entities/player';
 import { Wreckage } from '../entities/wreckage';
 import { Collectable, CollectableType } from '../entities/collectable';
 import { Asteroid } from '../entities/asteroid';
+import { Conduit } from '../entities/conduit';
 
 const ASTEROID_SHOWER_INTERVAL = 1.0 * 60.0 * 1000.0;
 
@@ -26,11 +27,11 @@ export class GameScene extends Scene {
     cursorKeys?: Types.Input.Keyboard.CursorKeys;
     wasdKeys?: WASDKeyMap;
 
+    conduits: Conduit[];
     wrecks: Wreckage[];
     collectables: Collectable[];
     asteroids: Asteroid[];
     gameOverActive: boolean;
-    lastAsteroidShower: number;
     map?: Tilemaps.Tilemap;
 
 
@@ -41,8 +42,8 @@ export class GameScene extends Scene {
         this.wrecks = [];
         this.collectables = [];
         this.asteroids = [];
+        this.conduits = [];
         this.gameOverActive = false;
-        this.lastAsteroidShower = 0;
     }
 
     preload () {
@@ -53,12 +54,14 @@ export class GameScene extends Scene {
         this.load.image('lightmask', 'assets/lightmask.png');
         this.load.image('lightcone', 'assets/lightcone.png');
 
+        this.load.image('plasma_conduit', 'assets/plasma_conduit.png');
+        this.load.spritesheet('plasma_glow', 'assets/plasma_glow.png', { frameWidth: 32, frameHeight: 32});
+
         this.load.image('asteroid', 'assets/asteroid.png');
         this.load.image('hull', 'assets/hull.png');
 
         this.load.image('fuel', 'assets/fuel.png');
         this.load.image('oxygen', 'assets/oxygen.png');
-        this.load.image('battery', 'assets/battery.png');
 
         this.load.image('thrust_rotate_cw', 'assets/thrust_rotate_cw.png');
         this.load.image('thrust_rotate_ccw', 'assets/thrust_rotate_ccw.png');
@@ -67,32 +70,29 @@ export class GameScene extends Scene {
         this.load.image('thrust_strafe_left', 'assets/thrust_strafe_left.png');
         this.load.image('thrust_strafe_right', 'assets/thrust_strafe_right.png');
 
+        this.load.audio("plasma_death", "sfx/plasma_death.mp3");
         this.load.audio("fuel_change", "sfx/fuel_change.mp3");
         this.load.audio("oxygen_change", "sfx/oxygen_change.mp3");
-        this.load.audio("battery_change", "sfx/battery_change.mp3");
     }
 
     create () {
+        this.anims.create({key: 'plasma_glow_flicker', frames: 'plasma_glow', frameRate:48, repeat:-1,});
         const worldWidth = 5000;
         const worldHeight = 5000;
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.wasdKeys = this.input.keyboard.addKeys('W,A,S,D,Q,E') as WASDKeyMap;
         this.gameOverActive = false;
-
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
-        this.lights.enable();
-
-        this.lastAsteroidShower = this.time.now - ASTEROID_SHOWER_INTERVAL * 2;
-
+        this.conduits = [];
         this.wrecks = [];
+        this.collectables = [];
         for(let i=0;i<10;i++){
             const x = (Math.random()-0.5) * worldWidth*2;
             const y = (Math.random()-0.5) * worldHeight*2;
             this.wrecks.push(new Wreckage(this, x, y));
         }
 
-        this.collectables = [];
         const ta:CollectableType[] = ["fuel", "oxygen"];
         for(let i=0;i<10;i++){
             const x = (Math.random()-0.5) * worldWidth*2;
@@ -121,6 +121,9 @@ export class GameScene extends Scene {
         if(this.map.objects[0]?.objects){
             for(const object of this.map.objects[0].objects){
                 switch(object.gid||0){
+                    case 59:
+                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0)));
+                        break;
                     case 60: {
                         const vx = (Math.random() - 0.5) * 0.01;
                         const vy = (Math.random() - 0.5) * 0.01;
@@ -171,17 +174,6 @@ export class GameScene extends Scene {
                this.scene.run("GameOverScene");
                this.gameOverActive = true;
             }
-        }
-        if(time > this.lastAsteroidShower + ASTEROID_SHOWER_INTERVAL){
-            this.lastAsteroidShower = time;
-            //this.spawnAsteroidShower();
-        }
-
-        if(this.cursorKeys?.space.isDown){
-            if(time > this.lastAsteroidShower){
-                this.spawnAsteroidShower();
-            }
-            this.lastAsteroidShower = time + 50.0;
         }
     }
 }

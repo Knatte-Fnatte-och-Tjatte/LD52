@@ -1,7 +1,7 @@
 {
-    "name": "vite-phaser-typescript-starter",
+    "name": "ludum-dare-52",
     "version": "0.0.1",
-    "description": "Simple starter template for PhaserJS + TypeScript based games / animations",
+    "description": "Our LD52 entry",
     "type": "module",
     "scripts": {
       "dev": "vite",

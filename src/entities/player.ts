@@ -2,6 +2,7 @@ import { GameObjects, Scene, Physics, Types, Math as PhaserMath } from "phaser";
 import { WASDKeyMap } from "../scenes/gamescene";
 import { Asteroid } from "./asteroid";
 import { Collectable } from "./collectable";
+import { Conduit } from "./conduit";
 import { Wreckage } from "./wreckage";
 
 const FUEL_CONSUMPTION = 0.3;
@@ -64,6 +65,9 @@ export class Player extends Physics.Matter.Sprite {
         if((other instanceof Wreckage) || (other instanceof Asteroid)){
             this.didCollide = true;
             this.collisionVelocity = new Phaser.Math.Vector2(this.body.velocity.x, this.body.velocity.y);
+        }
+        if(other instanceof Conduit){
+            this.isDead = true;
         }
     }
 
