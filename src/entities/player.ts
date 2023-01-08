@@ -68,6 +68,7 @@ export class Player extends Physics.Matter.Sprite {
         }
         if(other instanceof Conduit){
             this.isDead = true;
+            this.scene.sound.add('plasma_death').play();
         }
     }
 
