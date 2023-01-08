@@ -118,26 +118,27 @@ export class GameScene extends Scene {
 
         layer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(layer);
-        for(const object of this.map.objects[0].objects){
-            switch(object.gid||0){
-                case 18:
-                    this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "oxygen"));
-                    break;
-                case 19:
-                    this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "fuel"));
-                    break;
-                case 20: {
-                    const vx = (Math.random() - 0.5) * 0.01;
-                    const vy = (Math.random() - 0.5) * 0.01;
-                    this.asteroids.push(new Asteroid(this, (object.x||0), (object.y || 0), vx ,vy));
-                    break;
-                }
-                case 21:
-                    this.player = new Player(this, (object.x||0), (object.y||0), this.cursorKeys, this.wasdKeys);
-                    break;
-                case 22: {
-                    this.wrecks.push(new Wreckage(this, (object.x||0), (object.y || 0)));
-                    break;
+        if(this.map.objects[0]?.objects){
+            for(const object of this.map.objects[0].objects){
+                switch(object.gid||0){
+                    case 60: {
+                        const vx = (Math.random() - 0.5) * 0.01;
+                        const vy = (Math.random() - 0.5) * 0.01;
+                        this.asteroids.push(new Asteroid(this, (object.x||0), (object.y || 0), vx ,vy));
+                        break;
+                    }
+                    case 61:
+                        this.wrecks.push(new Wreckage(this, (object.x||0), (object.y || 0)));
+                        break;
+                    case 62:
+                        this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "oxygen"));
+                        break;
+                    case 63:
+                        this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "fuel"));
+                        break;
+                    case 64:
+                        this.player = new Player(this, (object.x||0), (object.y||0), this.cursorKeys, this.wasdKeys);
+                        break;
                 }
             }
         }
