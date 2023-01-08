@@ -18,7 +18,6 @@ const main = () => {
         physics: {
             default: 'matter',
             matter: {
-                enableSleeping: true,
                 gravity: {
                     y: 0
                 },
