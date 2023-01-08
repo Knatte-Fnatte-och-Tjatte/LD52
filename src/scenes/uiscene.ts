@@ -27,6 +27,10 @@ export class UIScene extends Scene {
     airbar?: Bar;
     energybar?: Bar;
     stunned?: GameObjects.Text;
+    floppyIcon?: GameObjects.Image;
+    floppyScore?: GameObjects.Text;
+    logEntry?: GameObjects.Text;
+    lastFloppyScore = 0;
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
         if(!config){config = {};}
@@ -38,13 +42,26 @@ export class UIScene extends Scene {
         this.load.image('bar_bg', 'assets/bar_bg.png');
         this.load.image('bar_air', 'assets/bar_air.png');
         this.load.image('bar_fuel', 'assets/bar_fuel.png');
+        this.load.image('floppy', 'assets/floppy.png');
     }
 
     create () {
         this.airbar = new Bar(this, 'bar_air', 16);
         this.fuelbar = new Bar(this, 'bar_fuel', 40);
-        this.stunned = this.add.text(16, 84, "Stunned");
+        this.stunned = this.add.text(280, 16, "Stunned");
         this.stunned.setVisible(false);
+
+        this.floppyIcon = this.add.image(28, 80, 'floppy');
+        this.floppyScore = this.add.text(48, 70, '0');
+        this.logEntry = this.add.text(16, 104, '', {color: '#3E1'});
+
+        const game = this.scene.get("GameScene");
+        const that = this;
+        game.events.on('readFloppy', (msg:string[]) => {
+            if(that.logEntry){
+                that.logEntry.setText(msg);
+            }
+        });
     }
 
     update(time: number, delta: number) {
@@ -67,6 +84,10 @@ export class UIScene extends Scene {
                 }
             }else{
                 this.stunned?.setVisible(false);
+            }
+
+            if((player.floppies != this.lastFloppyScore) && this.floppyScore){
+                this.floppyScore.setText(player.floppies.toString());
             }
         }
     }

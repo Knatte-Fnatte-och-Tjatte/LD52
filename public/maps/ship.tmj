@@ -200,6 +200,24 @@
                  "width":32,
                  "x":639,
                  "y":445
+                }, 
+                {
+                 "class":"",
+                 "gid":57,
+                 "height":32,
+                 "id":68,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"This is a test,\n\njust to see whether the log\nactually works,\nor not."
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":568.666666666667,
+                 "y":339.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -208,7 +226,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":68,
+ "nextobjectid":69,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",

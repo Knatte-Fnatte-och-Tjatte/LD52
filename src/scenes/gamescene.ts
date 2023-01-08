@@ -5,6 +5,7 @@ import { Collectable, CollectableType } from '../entities/collectable';
 import { Asteroid } from '../entities/asteroid';
 import { Conduit } from '../entities/conduit';
 import { TileConduit } from '../entities/tileConduit';
+import { Floppy } from '../entities/floppy';
 
 const ASTEROID_SHOWER_INTERVAL = 1.0 * 60.0 * 1000.0;
 
@@ -28,10 +29,6 @@ export class GameScene extends Scene {
     cursorKeys?: Types.Input.Keyboard.CursorKeys;
     wasdKeys?: WASDKeyMap;
 
-    conduits: Conduit[];
-    wrecks: Wreckage[];
-    collectables: Collectable[];
-    asteroids: Asteroid[];
     gameOverActive: boolean;
     map?: Tilemaps.Tilemap;
 
@@ -40,10 +37,6 @@ export class GameScene extends Scene {
         if(!config){config = {};}
         config.key = 'GameScene';
         super(config);
-        this.wrecks = [];
-        this.collectables = [];
-        this.asteroids = [];
-        this.conduits = [];
         this.gameOverActive = false;
     }
 
@@ -68,6 +61,7 @@ export class GameScene extends Scene {
         this.load.image('hull', 'assets/hull.png');
 
         this.load.image('fuel', 'assets/fuel.png');
+        this.load.image('floppy', 'assets/floppy.png');
         this.load.image('oxygen', 'assets/oxygen.png');
 
         this.load.image('thrust_rotate_cw', 'assets/thrust_rotate_cw.png');
@@ -81,6 +75,7 @@ export class GameScene extends Scene {
         this.load.audio("fuel_change", "sfx/fuel_change.mp3");
         this.load.audio("oxygen_change", "sfx/oxygen_change.mp3");
         this.load.audio("ambiance", "sfx/ambiance.mp3");
+        this.load.audio("typing", "sfx/typing.mp3")
     }
 
     create () {
@@ -94,9 +89,6 @@ export class GameScene extends Scene {
         this.gameOverActive = false;
         this.matter.world.setBounds(-worldWidth, -worldHeight, worldWidth*2, worldHeight*2);
 
-        this.conduits = [];
-        this.wrecks = [];
-        this.collectables = [];
         const that = this;
         this.scene.run("UIScene");
 
@@ -118,26 +110,30 @@ export class GameScene extends Scene {
         if(this.map.objects[0]?.objects){
             for(const object of this.map.objects[0].objects){
                 switch(object.gid||0){
+                    case 57:
+                        const msg = (object?.properties || []).find((p:any) => p.name === "text").value || '';
+                        new Floppy(this, (object.x||0), (object.y || 0), msg.split("\n"));
+                        break;
                     case 58:
-                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), false));
+                        new Conduit(this, (object.x||0), (object.y || 0), false);
                         break;
                     case 59:
-                        this.conduits.push(new Conduit(this, (object.x||0), (object.y || 0), true));
+                        new Conduit(this, (object.x||0), (object.y || 0), true);
                         break;
                     case 60: {
                         const vx = (Math.random() - 0.5) * 0.01;
                         const vy = (Math.random() - 0.5) * 0.01;
-                        this.asteroids.push(new Asteroid(this, (object.x||0), (object.y || 0), vx ,vy));
+                        new Asteroid(this, (object.x||0), (object.y || 0), vx ,vy);
                         break;
                     }
                     case 61:
-                        this.wrecks.push(new Wreckage(this, (object.x||0), (object.y || 0)));
+                        new Wreckage(this, (object.x||0), (object.y || 0));
                         break;
                     case 62:
-                        this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "oxygen"));
+                        new Collectable(this, (object.x||0), (object.y || 0), 500, "oxygen");
                         break;
                     case 63:
-                        this.collectables.push(new Collectable(this, (object.x||0), (object.y || 0), 500, "fuel"));
+                        new Collectable(this, (object.x||0), (object.y || 0), 500, "fuel");
                         break;
                     case 64:
                         this.player = new Player(this, (object.x||0), (object.y||0), this.cursorKeys, this.wasdKeys);
@@ -163,7 +159,7 @@ export class GameScene extends Scene {
             const start_y = py + Math.sin(deg) * 5000.0;
             const vx = start_x * -0.005 * (1.0 + ((Math.random() - 0.5)*0.1));
             const vy = start_y * -0.005 * (1.0 + ((Math.random() - 0.5)*0.1));
-            this.asteroids.push(new Asteroid(this, start_x, start_y, vx, vy));
+            new Asteroid(this, start_x, start_y, vx, vy);
         }
     }
 

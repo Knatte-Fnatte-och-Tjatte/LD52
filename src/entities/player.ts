@@ -3,6 +3,7 @@ import { WASDKeyMap } from "../scenes/gamescene";
 import { Asteroid } from "./asteroid";
 import { Collectable } from "./collectable";
 import { Conduit } from "./conduit";
+import { Floppy } from "./floppy";
 import { Wreckage } from "./wreckage";
 
 const FUEL_CONSUMPTION = 0.3;
@@ -23,6 +24,8 @@ const START_OXYGEN = 800.0;
 const START_FUEL = 700.0;
 
 export class Player extends Physics.Matter.Sprite {
+    floppies: number;
+
     fuel: number;
     fuelMax: number;
 
@@ -67,6 +70,11 @@ export class Player extends Physics.Matter.Sprite {
         } else if(other instanceof Conduit){
             this.isDead = true;
             this.scene.sound.add('plasma_death').play();
+        } else if(other instanceof Floppy){
+            this.floppies++;
+            this.scene.sound.add('typing').play();
+            this.scene.events.emit('readFloppy', other.message);
+            other.destroy();
         } else if(other.tile) {
             if(other?.tile?.properties?.kills){
                 this.isDead = true;
@@ -93,10 +101,10 @@ export class Player extends Physics.Matter.Sprite {
         this.oxygenMax = 1000.0;
 
         this.isDead = false;
-
+        this.floppies = 0;
 
         this.setScale(0.5, 0.5);
-        
+
         this.setFrictionAir(0);
         this.setFrictionStatic(0.1);
         this.setBounce(PLAYER_BOUNCE);
