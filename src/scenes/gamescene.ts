@@ -47,8 +47,8 @@ export class GameScene extends Scene {
     }
 
     preload () {
-        this.load.tilemapTiledJSON('ship', 'maps/ship.tmj');
-        this.load.image('ship', 'assets/tilemap.png');
+        this.load.tilemapTiledJSON('ship', 'maps/karteship.tmj');
+        this.load.spritesheet('ship', 'assets/tilemap.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.image('player', 'assets/player.png');
         this.load.image('lightmask', 'assets/lightmask.png');
@@ -56,6 +56,7 @@ export class GameScene extends Scene {
 
         this.load.image('plasma_conduit', 'assets/plasma_conduit.png');
         this.load.spritesheet('plasma_glow', 'assets/plasma_glow.png', { frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('plasma_tile_glow', 'assets/plasma_tile_glow.png', { frameWidth: 64, frameHeight: 64});
 
         this.load.image('asteroid', 'assets/asteroid.png');
         this.load.image('asteroid_big', 'assets/asteroid_big.png');
@@ -78,7 +79,7 @@ export class GameScene extends Scene {
     }
 
     create () {
-        this.anims.create({key: 'plasma_glow_flicker', frames: 'plasma_glow', frameRate:48, repeat:-1,});
+        this.anims.create({key: 'plasma_glow_flicker', frames: 'plasma_glow', frameRate:24, repeat:-1,});
         const worldWidth = 5000;
         const worldHeight = 5000;
         this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -117,6 +118,10 @@ export class GameScene extends Scene {
         this.map = this.add.tilemap('ship');
         const tiles = this.map.addTilesetImage('ship');
         const layer = this.map.createLayer(this.map.layers[0].name, tiles);
+        layer.forEachTile(tile => {
+            const tileWorldPos = layer.tileToWorldXY(tile.x, tile.y);
+            console.log(tile.index)
+        });
 
         layer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(layer);
