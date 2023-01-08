@@ -110,6 +110,9 @@ export class GameScene extends Scene {
             }
         });
 
+        const music = this.sound.add('ambiance');
+        music.play({loop: true});
+
         layer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(layer);
         if(this.map.objects[0]?.objects){
