@@ -96,6 +96,7 @@ export class Player extends Physics.Matter.Sprite {
 
 
         this.setScale(0.5, 0.5);
+        
         this.setFrictionAir(0);
         this.setFrictionStatic(0.1);
         this.setBounce(PLAYER_BOUNCE);

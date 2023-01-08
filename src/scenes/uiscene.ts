@@ -1,6 +1,26 @@
 import { GameObjects, Scene } from 'phaser';
-import { Bar } from '../ui/fuelbar';
 import { GameScene } from './gamescene';
+
+export class Bar {
+    value: number;
+    bar: GameObjects.Sprite;
+    bg: GameObjects.Sprite;
+
+    constructor (scene:Scene, texture: string, y:number) {
+        this.value = 1.0;
+        this.bg = scene.add.sprite(16, y, 'bar_bg');
+        this.bg.displayOriginX = 0;
+        this.bg.displayOriginY = 0;
+
+        this.bar = scene.add.sprite(16, y, texture);
+        this.bar.displayOriginX = 0;
+        this.bar.displayOriginY = 0;
+    }
+
+    update(scene: Scene, time: number, delta: number) {
+        this.bar.setCrop(0,0, this.value * 256, 32);
+    }
+}
 
 export class UIScene extends Scene {
     fuelbar?: Bar;
