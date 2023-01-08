@@ -7,16 +7,25 @@ const ASTEROID_BOUNCE = 0.2;
 
 export class Asteroid extends Physics.Matter.Sprite {
     constructor (scene:GameScene, x:number, y:number, vx:number, vy:number) {
-        const size = (Math.random() * 1.5) + 0.5;
-        const sprite = size > 1.0 ? 'asteroid_big' : 'asteroid';
+        let sprite = 'asteroid';
+        let mass = ASTEROID_MASS;
+        switch ((Math.random() * 3.0)|0){
+            case 1:
+                sprite = 'asteroid_tiny';
+                mass *= 0.5;
+                break;
+            case 2:
+                sprite = 'asteroid_big';
+                mass *= 2.0;
+                break;
+        }
         super(scene.matter.world, x, y, sprite);
         this.scene.add.existing(this);
 
         this.setFrictionAir(0);
-        this.setScale(size);
         this.setBounce(ASTEROID_BOUNCE);
         this.setRotation(Math.random() * Math.PI * 2);
         this.setVelocity(vx, vy);
-        this.setMass(ASTEROID_MASS * size);
+        this.setMass(mass);
     }
 }

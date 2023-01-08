@@ -59,6 +59,7 @@ export class GameScene extends Scene {
 
         this.load.image('asteroid', 'assets/asteroid.png');
         this.load.image('asteroid_big', 'assets/asteroid_big.png');
+        this.load.image('asteroid_tiny', 'assets/asteroid_tiny.png');
         this.load.image('hull', 'assets/hull.png');
 
         this.load.image('fuel', 'assets/fuel.png');
