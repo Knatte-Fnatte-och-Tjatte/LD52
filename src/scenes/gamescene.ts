@@ -48,7 +48,7 @@ export class GameScene extends Scene {
     }
 
     preload () {
-        this.load.tilemapTiledJSON('ship', 'maps/ship.tmj');
+        this.load.tilemapTiledJSON('ship', 'maps/karteship.tmj');
         this.load.spritesheet('ship', 'assets/tilemap.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.image('player', 'assets/player.png');
@@ -56,6 +56,7 @@ export class GameScene extends Scene {
         this.load.image('lightcone', 'assets/lightcone.png');
 
         this.load.image('plasma_conduit', 'assets/plasma_conduit.png');
+        this.load.image('plasma_conduit_horiz', 'assets/plasma_conduit_horiz.png');
         this.load.spritesheet('plasma_glow', 'assets/plasma_glow.png', { frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('plasma_glow_horiz', 'assets/plasma_glow_horiz.png', { frameWidth: 32, frameHeight: 32});
 
@@ -95,28 +96,6 @@ export class GameScene extends Scene {
         this.conduits = [];
         this.wrecks = [];
         this.collectables = [];
-        for(let i=0;i<10;i++){
-            const x = (Math.random()-0.5) * worldWidth*2;
-            const y = (Math.random()-0.5) * worldHeight*2;
-            this.wrecks.push(new Wreckage(this, x, y));
-        }
-
-        const ta:CollectableType[] = ["fuel", "oxygen"];
-        for(let i=0;i<10;i++){
-            const x = (Math.random()-0.5) * worldWidth*2;
-            const y = (Math.random()-0.5) * worldHeight*2;
-            const t = ta[(Math.random() * 3)|0];
-            const v = Math.random() * 1000.0;
-            this.collectables.push(new Collectable(this, x, y, v, t));
-        }
-
-        for(let i=0;i<10;i++){
-            const x = (Math.random()-0.5) * worldWidth*2;
-            const y = (Math.random()-0.5) * worldHeight*2;
-            const vx = (Math.random()-0.5) * 0.2;
-            const vy = (Math.random()-0.5) * 0.2;
-            this.asteroids.push(new Asteroid(this, x, y, vx, vy));
-        }
         const that = this;
         this.scene.run("UIScene");
 
