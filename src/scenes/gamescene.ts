@@ -31,6 +31,7 @@ export class GameScene extends Scene {
 
     gameOverActive: boolean;
     map?: Tilemaps.Tilemap;
+    mapLayer?: Tilemaps.TilemapLayer;
 
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
@@ -47,6 +48,10 @@ export class GameScene extends Scene {
         this.load.image('player', 'assets/player.png');
         this.load.image('lightmask', 'assets/lightmask.png');
         this.load.image('lightcone', 'assets/lightcone.png');
+
+        this.load.image('transponder', 'assets/transponder.png');
+        this.load.image('blaster', 'assets/blaster.png');
+        this.load.spritesheet('blaster_blast', 'assets/blaster_blast.png', {frameWidth: 128, frameHeight: 128});
 
         this.load.image('plasma_conduit', 'assets/plasma_conduit.png');
         this.load.image('plasma_conduit_horiz', 'assets/plasma_conduit_horiz.png');
@@ -79,6 +84,8 @@ export class GameScene extends Scene {
     }
 
     create () {
+        this.anims.create({key: 'blaster_blast_blasting', frames: 'blaster_blast', frameRate:24});
+
         this.anims.create({key: 'plasma_glow_flicker', frames: 'plasma_glow', frameRate:24, repeat:-1,});
         this.anims.create({key: 'plasma_glow_horiz_flicker', frames: 'plasma_glow_horiz', frameRate:24, repeat:-1,});
         this.anims.create({key: 'plasma_tile_glow_flicker', frames: 'plasma_tile_glow', frameRate:8, repeat:-1,});
@@ -97,7 +104,7 @@ export class GameScene extends Scene {
         const tiles = this.map.addTilesetImage('ship', undefined, 32, 32, 1, 2)
         tiles.image.setFilter(Phaser.Textures.FilterMode.NEAREST);
         const layer = this.map.createLayer(this.map.layers[0].name, tiles);
-
+        this.mapLayer = layer;
 
         layer.forEachTile(tile => {
             if(tile.index == 18){
@@ -110,10 +117,17 @@ export class GameScene extends Scene {
         music.play({loop: true});
 
         layer.setCollisionByProperty({ collides: true });
+
         this.matter.world.convertTilemapLayer(layer);
         if(this.map.objects[0]?.objects){
             for(const object of this.map.objects[0].objects){
                 switch(object.gid||0){
+                    case 55:
+                        new Collectable(this, (object.x||0), (object.y || 0), 500, "transponder");
+                        break;
+                    case 56:
+                        new Collectable(this, (object.x||0), (object.y || 0), 500, "blaster");
+                        break;
                     case 57:
                         const msg = (object?.properties || []).find((p:any) => p.name === "text").value || '';
                         new Floppy(this, (object.x||0), (object.y || 0), msg.split("\n"));
@@ -174,6 +188,9 @@ export class GameScene extends Scene {
                this.scene.run("GameOverScene");
                this.gameOverActive = true;
             }
+        }
+        if(this.cursorKeys?.space.isDown){
+            this.player?.blast();
         }
     }
 }

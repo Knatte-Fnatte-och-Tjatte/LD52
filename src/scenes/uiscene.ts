@@ -28,6 +28,7 @@ export class UIScene extends Scene {
     energybar?: Bar;
     stunned?: GameObjects.Text;
     floppyIcon?: GameObjects.Image;
+    blasterIcon?: GameObjects.Image;
     floppyScore?: GameObjects.Text;
     logEntry?: GameObjects.Text;
     lastFloppyScore = 0;
@@ -43,6 +44,7 @@ export class UIScene extends Scene {
         this.load.image('bar_air', 'assets/bar_air.png');
         this.load.image('bar_fuel', 'assets/bar_fuel.png');
         this.load.image('floppy', 'assets/floppy.png');
+        this.load.image('blaster', 'assets/blaster.png');
     }
 
     create () {
@@ -53,6 +55,7 @@ export class UIScene extends Scene {
 
         this.floppyIcon = this.add.image(28, 80, 'floppy');
         this.floppyScore = this.add.text(48, 70, '0');
+        this.blasterIcon = this.add.image(128, 80, 'blaster').setVisible(false);
         this.logEntry = this.add.text(16, 104, '', {color: '#3E1'});
 
         const game = this.scene.get("GameScene");
@@ -89,6 +92,7 @@ export class UIScene extends Scene {
             if((player.floppies != this.lastFloppyScore) && this.floppyScore){
                 this.floppyScore.setText(player.floppies.toString());
             }
+            this.blasterIcon?.setVisible(player.hasBlaster);
         }
     }
 }

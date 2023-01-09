@@ -1,5 +1,5 @@
 import { GameObjects, Scene, Physics, Types, Math as PhaserMath } from "phaser";
-import { WASDKeyMap } from "../scenes/gamescene";
+import { GameScene, WASDKeyMap } from "../scenes/gamescene";
 import { Asteroid } from "./asteroid";
 import { Collectable } from "./collectable";
 import { Conduit } from "./conduit";
@@ -24,19 +24,21 @@ const START_OXYGEN = 800.0;
 const START_FUEL = 700.0;
 
 export class Player extends Physics.Matter.Sprite {
-    floppies: number;
-
+    floppies = 0
+    lastBlast = 0;
+    hasBlaster = true;
     fuel: number;
-    fuelMax: number;
+    fuelMax = 1000;
 
     oxygen: number;
-    oxygenMax: number;
+    oxygenMax = 1000;
 
     lightmask: GameObjects.Sprite;
     lightcone: GameObjects.Sprite;
+    blasting: GameObjects.Sprite;
 
-    stunned: number;
-    isDead: boolean;
+    stunned = -1.0;
+    isDead = false;
     didCollide: boolean;
     collisionVelocity: PhaserMath.Vector2 | MatterJS.Vector;
 
@@ -50,18 +52,55 @@ export class Player extends Physics.Matter.Sprite {
     cursorKeys: Types.Input.Keyboard.CursorKeys;
     wasdKeys: WASDKeyMap;
 
+
+    blast() {
+        if(!this.hasBlaster){return;}
+        if(this.isDead || this.stunned > 0.0){return;}
+        if(this.scene.time.now > this.lastBlast + 1000){
+            const that = this;
+            this.lastBlast = this.scene.time.now;
+            this.blasting.setVisible(true);
+            this.blasting.play('blaster_blast_blasting').on('animationcomplete', () => {
+                that.blasting.setVisible(false);
+            });
+            this.thrustBack(0.7);
+            this.scene.sound.add('plasma_death').play();
+
+            /*
+            const scene = this.scene as GameScene;
+            const body = this.scene.matter.add.circle(this.x, this.y, 64, { isSensor: true });
+            this.scene.matter.overlap(body as any, scene.mapLayer?.body as any, (a,b) => {
+                console.log(a);
+                console.log(b);
+                console.log(" ");
+            });
+            */
+        }
+    }
+
     collideWith(e:Types.Physics.Matter.MatterCollisionData, other: any) {
         if(this.isDead || this.stunned > 0.0){return;}
         if(other instanceof Collectable){
-            this[other.collectableType] = this[other.collectableType] + other.value;
             this.ceilResources();
             switch(other.collectableType){
                 case "fuel":
+                    this[other.collectableType] = this[other.collectableType] + other.value;
                     this.scene.sound.add('fuel_change').play();
                     break;
                 case "oxygen":
+                    this[other.collectableType] = this[other.collectableType] + other.value;
                     this.scene.sound.add('oxygen_change').play();
                     break;
+                case "blaster":
+                    this.hasBlaster = true;
+                    this.scene.sound.add('oxygen_change').play();
+                    break;
+                case "transponder":
+                    this.scene.scene.run("GameWonScene");
+                    const gs = this.scene as GameScene;
+                    gs.gameOverActive = true;
+                    break;
+
             }
             other.destroy();
         } else if((other instanceof Wreckage) || (other instanceof Asteroid)){
@@ -75,11 +114,13 @@ export class Player extends Physics.Matter.Sprite {
             this.scene.sound.add('typing').play();
             this.scene.events.emit('readFloppy', other.message);
             other.destroy();
-        } else if(other.tile) {
+        } else if(other?.tile) {
             if(other?.tile?.properties?.kills){
                 this.isDead = true;
                 this.scene.sound.add('plasma_death').play();
             }
+        } else {
+            console.log(other);
         }
     }
 
@@ -93,15 +134,8 @@ export class Player extends Physics.Matter.Sprite {
         scene.add.existing(this);
         this.setBody({type: 'circle', radius: 36});
 
-        this.stunned = -1.0;
         this.fuel = START_FUEL;
-        this.fuelMax = 1000.0;
-
         this.oxygen = START_OXYGEN;
-        this.oxygenMax = 1000.0;
-
-        this.isDead = false;
-        this.floppies = 0;
 
         this.setScale(0.5, 0.5);
 
@@ -123,6 +157,7 @@ export class Player extends Physics.Matter.Sprite {
         this.collisionVelocity = this.body.velocity;
         this.didCollide = false;
 
+        this.blasting = scene.add.sprite(x,y,'blaster_blast',0).setDepth(2).setVisible(false);
         this.lightmask = scene.add.sprite(x,y,'lightmask').setDepth(1);
         this.lightcone = scene.add.sprite(x,y,'lightcone').setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
 
@@ -191,7 +226,7 @@ export class Player extends Physics.Matter.Sprite {
     }
 
     updateChildren() {
-        const children = [this.thrusterForward, this.thrusterBackward, this.thrusterRotateCCW, this.thrusterRotateCW, this.thrusterStrafeLeft, this.thrusterStrafeRight, this.lightmask, this.lightcone];
+        const children = [this.thrusterForward, this.thrusterBackward, this.thrusterRotateCCW, this.thrusterRotateCW, this.thrusterStrafeLeft, this.thrusterStrafeRight, this.lightmask, this.lightcone, this.blasting];
         for(const t of children){
             t.x = this.x;
             t.y = this.y;

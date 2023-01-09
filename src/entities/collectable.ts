@@ -3,7 +3,7 @@ import { Textures, GameObjects, Scene, Physics } from "phaser";
 import { GameScene } from "../scenes/gamescene";
 import { Player } from "./player";
 
-export type CollectableType = "oxygen" | "fuel";
+export type CollectableType = "oxygen" | "fuel" | "blaster" | "transponder";
 
 const COLLECTABLE_BOUNCE = 0.2;
 const COLLECTABLE_MASS = 10.0;
