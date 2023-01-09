@@ -76,7 +76,7 @@ export class Player extends Physics.Matter.Sprite {
             const ty = (px / 32)|0;
             if(gs.mapLayer){
                 const tile = gs.mapLayer.getTileAtWorldXY(px,py);
-                if(tile.index === 19){
+                if(tile?.index === 19){
                     gs.mapLayer.putTileAtWorldXY(20,px,py);
                     const physics = tile.physics as any;
                     physics?.matterBody?.destroy();
