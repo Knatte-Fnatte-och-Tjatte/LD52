@@ -22,6 +22,7 @@ const main = () => {
                 gravity: {
                     y: 0
                 },
+                debug: true,
             }
         },
         scene: [ MainMenuScene, GameScene, UIScene, GameOverScene, GameWonScene ]

@@ -22,11 +22,11 @@
             "scaleInDock": 1
         },
         "public/maps/ship.tmj": {
-            "scale": 1,
+            "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 801.5,
-                "y": 460.5
+                "x": 498.75,
+                "y": 376.25
             }
         },
         "public/maps/ship.tmj#ship": {

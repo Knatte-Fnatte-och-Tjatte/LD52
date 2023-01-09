@@ -26,7 +26,7 @@ const START_FUEL = 700.0;
 export class Player extends Physics.Matter.Sprite {
     floppies = 0
     lastBlast = 0;
-    hasBlaster = false;
+    hasBlaster = true;
     fuel: number;
     fuelMax = 1000;
 
@@ -66,15 +66,21 @@ export class Player extends Physics.Matter.Sprite {
             this.thrustBack(0.7);
             this.scene.sound.add('plasma_death').play();
 
-            /*
-            const scene = this.scene as GameScene;
-            const body = this.scene.matter.add.circle(this.x, this.y, 64, { isSensor: true });
-            this.scene.matter.overlap(body as any, scene.mapLayer?.body as any, (a,b) => {
-                console.log(a);
-                console.log(b);
-                console.log(" ");
-            });
-            */
+            const ox = Math.cos(this.angle * Math.PI / 180);
+            const oy = Math.sin(this.angle * Math.PI / 180);
+            const px = this.x + ox*42;
+            const py = this.y + oy*42;
+            const gs = this.scene as GameScene;
+            const tx = (px / 32)|0;
+            const ty = (px / 32)|0;
+            if(gs.mapLayer){
+                const tile = gs.mapLayer.getTileAtWorldXY(px,py);
+                if(tile.index === 19){
+                    gs.mapLayer.putTileAtWorldXY(20,px,py);
+                    const physics = tile.physics as any;
+                    physics?.matterBody?.destroy();
+                }
+            }
         }
     }
 
@@ -132,6 +138,7 @@ export class Player extends Physics.Matter.Sprite {
     constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys, wasdKeys: WASDKeyMap) {
         super(scene.matter.world, x, y, 'player');
         scene.add.existing(this);
+        const gs = scene as GameScene;
         this.setBody({type: 'circle', radius: 36});
 
         this.fuel = START_FUEL;
@@ -160,6 +167,7 @@ export class Player extends Physics.Matter.Sprite {
         this.blasting = scene.add.sprite(x,y,'blaster_blast',0).setDepth(2).setVisible(false);
         this.lightmask = scene.add.sprite(x,y,'lightmask').setDepth(1);
         this.lightcone = scene.add.sprite(x,y,'lightcone').setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
+
 
         const player = this;
         this.setOnCollide((e:Types.Physics.Matter.MatterCollisionData) => {

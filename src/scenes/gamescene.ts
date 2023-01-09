@@ -98,6 +98,8 @@ export class GameScene extends Scene {
 
         const that = this;
         this.scene.run("UIScene");
+        const music = this.sound.add('ambiance');
+        music.play({loop: true});
 
 
         this.map = this.add.tilemap('mainmap');
@@ -106,19 +108,19 @@ export class GameScene extends Scene {
         const layer = this.map.createLayer(this.map.layers[0].name, tiles);
         this.mapLayer = layer;
 
+        layer.setCollisionByProperty({ collides: true });
+        this.matter.world.convertTilemapLayer(layer);
+
         layer.forEachTile(tile => {
-            if(tile.index == 18){
-                const tileWorldPos = layer.tileToWorldXY(tile.x, tile.y);
-                const tc = new TileConduit(that, tileWorldPos.x + 16, tileWorldPos.y + 16)
+            switch(tile.index){
+                case 18: {
+                    const tileWorldPos = layer.tileToWorldXY(tile.x, tile.y);
+                    new TileConduit(that, tileWorldPos.x + 16, tileWorldPos.y + 16);
+                    break;
+                }
             }
         });
 
-        const music = this.sound.add('ambiance');
-        music.play({loop: true});
-
-        layer.setCollisionByProperty({ collides: true });
-
-        this.matter.world.convertTilemapLayer(layer);
         if(this.map.objects[0]?.objects){
             for(const object of this.map.objects[0].objects){
                 switch(object.gid||0){
@@ -129,7 +131,7 @@ export class GameScene extends Scene {
                         new Collectable(this, (object.x||0), (object.y || 0), 500, "blaster");
                         break;
                     case 57:
-                        const msg = (object?.properties || []).find((p:any) => p.name === "text").value || '';
+                        const msg = (object?.properties || []).find((p:any) => p?.name === "text")?.value || '';
                         new Floppy(this, (object.x||0), (object.y || 0), msg.split("\n"));
                         break;
                     case 58:
