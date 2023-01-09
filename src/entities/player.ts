@@ -282,7 +282,7 @@ export class Player extends Physics.Matter.Sprite {
             this.isDead = true;
         }
 
-        if(this.fule <= 0){
+        if(this.fuel <= 0){
             if(!this.isDead){
                 this.deathCount++;
             }
