@@ -859,11 +859,17 @@
                  "height":32,
                  "id":254,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"Great, a blaster!\nI can fire it with the spacebar"
+                        }],
                  "rotation":0,
                  "visible":true,
                  "width":32,
-                 "x":2833.33333333333,
-                 "y":2542.66666666667
+                 "x":2844,
+                 "y":2714
                 }, 
                 {
                  "class":"",

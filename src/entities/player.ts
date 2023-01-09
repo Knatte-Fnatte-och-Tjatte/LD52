@@ -109,7 +109,6 @@ export class Player extends Physics.Matter.Sprite {
                     const gs = this.scene as GameScene;
                     gs.gameOverActive = true;
                     break;
-
             }
             other.destroy();
         } else if((other instanceof Wreckage) || (other instanceof Asteroid)){
