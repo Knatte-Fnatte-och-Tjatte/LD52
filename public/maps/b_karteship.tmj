@@ -3757,6 +3757,24 @@
                  "width":32,
                  "x":295.333333333333,
                  "y":205.333333333333
+                }, 
+                {
+                 "class":"",
+                 "gid":57,
+                 "height":32,
+                 "id":551,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"If only I had my blaster to get to the transponder behind this door."
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":32,
+                 "x":690,
+                 "y":2769.33333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3765,7 +3783,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":551,
+ "nextobjectid":552,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",
