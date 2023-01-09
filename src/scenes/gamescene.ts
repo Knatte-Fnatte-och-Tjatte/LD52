@@ -94,7 +94,7 @@ export class GameScene extends Scene {
 
 
         this.map = this.add.tilemap('mainmap');
-        const tiles = this.map.addTilesetImage('ship',null, 32, 32, 1, 2)
+        const tiles = this.map.addTilesetImage('ship', undefined, 32, 32, 1, 2)
         tiles.image.setFilter(Phaser.Textures.FilterMode.NEAREST);
         const layer = this.map.createLayer(this.map.layers[0].name, tiles);
 
