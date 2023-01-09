@@ -42,7 +42,7 @@ export class GameScene extends Scene {
     }
 
     preload () {
-        this.load.tilemapTiledJSON('mainmap', 'maps/b_karteship.tmj');
+        this.load.tilemapTiledJSON('mainmap', 'maps/s_karteship.tmj');
         this.load.image('ship', 'assets/tileset_extruded.png');
 
         this.load.image('player', 'assets/player.png');

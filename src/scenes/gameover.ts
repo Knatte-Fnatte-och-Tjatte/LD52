@@ -21,6 +21,7 @@ export class GameOverScene extends Scene {
         const that = this;
         tryAgainButton.setInteractive().on("pointerdown", () => {
             that.scene.stop('GameOverScene');
+
             const gs = that.scene.get("GameScene") as GameScene;
             if(gs.player){
                 gs.player.isDead = false;
