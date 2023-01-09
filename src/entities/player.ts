@@ -117,8 +117,10 @@ export class Player extends Physics.Matter.Sprite {
             this.scene.sound.add('plasma_death').play();
         } else if(other instanceof Floppy){
             this.floppies++;
-            this.scene.sound.add('typing').play();
-            this.scene.events.emit('readFloppy', other.message);
+            if(String(other.message).trim() !== ''){
+                this.scene.sound.add('typing').play();
+                this.scene.events.emit('readFloppy', other.message);
+            }
             other.destroy();
         } else if(other?.tile) {
             if(other?.tile?.properties?.kills){

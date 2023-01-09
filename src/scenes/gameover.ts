@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { GameScene } from './gamescene';
 
 export class GameOverScene extends Scene {
 
@@ -20,7 +21,13 @@ export class GameOverScene extends Scene {
         const that = this;
         tryAgainButton.setInteractive().on("pointerdown", () => {
             that.scene.stop('GameOverScene');
-            that.scene.get('GameScene').scene.restart();
+            const gs = that.scene.get("GameScene") as GameScene;
+            if(gs.player){
+                gs.player.isDead = false;
+                gs.player.fuel = 1000;
+                gs.player.oxygen = 1000;
+            }
+            //that.scene.get('GameScene').scene.restart();
         })
     }
 }
