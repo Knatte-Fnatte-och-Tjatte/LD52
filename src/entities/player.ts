@@ -276,6 +276,16 @@ export class Player extends Physics.Matter.Sprite {
 
         this.oxygen -= OXYGEN_CONSUMPTION_RATE * ndelta;
         if(this.oxygen <= 0){
+            if(!this.isDead){
+                this.deathCount++;
+            }
+            this.isDead = true;
+        }
+
+        if(this.fule <= 0){
+            if(!this.isDead){
+                this.deathCount++;
+            }
             this.isDead = true;
         }
     }
