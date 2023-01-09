@@ -2766,7 +2766,7 @@
                         {
                          "name":"text",
                          "type":"string",
-                         "value":"with W,A,S,D as well as Q,R I can move around"
+                         "value":"with W,A,S,D as well as Q,R I can move around.\n\nI need to find the Transponder to send for help."
                         }],
                  "rotation":0,
                  "visible":true,
