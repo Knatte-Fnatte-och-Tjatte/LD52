@@ -1,6 +1,12 @@
-# PhaserJS + Typescript
+# Space Harvest Wreckage - Extreme 2001
 
-A simple starter template/example for PhaserJS and TypeScript.
+You play an astronaut on a spaceship that got shot to pieces by meteorites.
+
+Take care of your fuel and oxygen supply and harvest as many floppy disks as possible, but watch out for the dangerous plasma traps! :3
+
+## Ludum Dare
+
+This game was created for LD52 with the topic "Harvest", you can find the original submitted Version on the LD52 Branch, this branch fixes some (rare) crashes.
 
 ## Requirements
 - Node JS (v18+) with NPM
