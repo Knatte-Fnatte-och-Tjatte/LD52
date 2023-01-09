@@ -11,11 +11,11 @@
             "scaleInEditor": 1
         },
         "public/maps/karteship.tmj": {
-            "scale": 4,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1848.25,
-                "y": 250.5
+                "x": 521,
+                "y": 1253
             }
         },
         "public/maps/karteship.tmj#ship": {
@@ -44,8 +44,8 @@
     "project": "ld52.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "public/maps/ship.tmj",
         "public/maps/karteship.tmj",
+        "public/maps/ship.tmj",
         "ship.tsx"
     ]
 }
