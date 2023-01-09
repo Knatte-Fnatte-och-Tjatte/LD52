@@ -26,7 +26,7 @@ const START_FUEL = 700.0;
 export class Player extends Physics.Matter.Sprite {
     floppies = 0
     lastBlast = 0;
-    hasBlaster = true;
+    hasBlaster = false;
     fuel: number;
     fuelMax = 1000;
 
