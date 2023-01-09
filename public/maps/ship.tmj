@@ -235,7 +235,7 @@
         {
          "columns":8,
          "firstgid":1,
-         "image":"..\/assets\/tilemap.png",
+         "image":"..\/assets\/tileset.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,

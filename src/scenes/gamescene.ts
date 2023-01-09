@@ -41,8 +41,8 @@ export class GameScene extends Scene {
     }
 
     preload () {
-        this.load.tilemapTiledJSON('ship', 'maps/ship.tmj');
-        this.load.spritesheet('ship', 'assets/tilemap.png', {frameWidth: 32, frameHeight: 32});
+        this.load.tilemapTiledJSON('mainmap', 'maps/ship.tmj');
+        this.load.image('ship', 'assets/tileset_extruded.png');
 
         this.load.image('player', 'assets/player.png');
         this.load.image('lightmask', 'assets/lightmask.png');
@@ -92,9 +92,13 @@ export class GameScene extends Scene {
         const that = this;
         this.scene.run("UIScene");
 
-        this.map = this.add.tilemap('ship');
-        const tiles = this.map.addTilesetImage('ship');
+
+        this.map = this.add.tilemap('mainmap');
+        const tiles = this.map.addTilesetImage('ship',null, 32, 32, 1, 2)
+        tiles.image.setFilter(Phaser.Textures.FilterMode.NEAREST);
         const layer = this.map.createLayer(this.map.layers[0].name, tiles);
+
+
         layer.forEachTile(tile => {
             if(tile.index == 18){
                 const tileWorldPos = layer.tileToWorldXY(tile.x, tile.y);
