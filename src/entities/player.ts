@@ -13,8 +13,8 @@ const ACCELERATION_RATE = 0.01;
 const OXYGEN_CONSUMPTION_RATE = 0.04;
 
 const STUN_DURATION_MS = 5000.0;
-const COLLISION_STUN_THRESHOLD = 3.0;
-const COLLISION_DEATH_THRESHOLD = 5.0;
+const COLLISION_STUN_THRESHOLD = 4.0;
+const COLLISION_DEATH_THRESHOLD = 6.0;
 
 const PLAYER_MASS = 100.0;
 const PLAYER_BOUNCE = 0.2;
@@ -26,9 +26,10 @@ const START_FUEL = 700.0;
 export class Player extends Physics.Matter.Sprite {
     floppies = 0
     lastBlast = 0;
-    hasBlaster = true;
+    hasBlaster = false;
     fuel: number;
     fuelMax = 1000;
+    deathCount = 0;
 
     oxygen: number;
     oxygenMax = 1000;
@@ -115,6 +116,9 @@ export class Player extends Physics.Matter.Sprite {
             this.didCollide = true;
             this.collisionVelocity = new Phaser.Math.Vector2(this.body.velocity.x, this.body.velocity.y);
         } else if(other instanceof Conduit){
+            if(!this.isDead){
+                this.deathCount++;
+            }
             this.isDead = true;
             this.scene.sound.add('plasma_death').play();
         } else if(other instanceof Floppy){
@@ -126,11 +130,12 @@ export class Player extends Physics.Matter.Sprite {
             other.destroy();
         } else if(other?.tile) {
             if(other?.tile?.properties?.kills){
+                if(!this.isDead){
+                    this.deathCount++;
+                }
                 this.isDead = true;
                 this.scene.sound.add('plasma_death').play();
             }
-        } else {
-            console.log(other);
         }
     }
 
@@ -171,7 +176,6 @@ export class Player extends Physics.Matter.Sprite {
         this.blasting = scene.add.sprite(x,y,'blaster_blast',0).setDepth(2).setVisible(false);
         this.lightmask = scene.add.sprite(x,y,'lightmask').setDepth(1);
         this.lightcone = scene.add.sprite(x,y,'lightcone').setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
-
 
         const player = this;
         this.setOnCollide((e:Types.Physics.Matter.MatterCollisionData) => {
