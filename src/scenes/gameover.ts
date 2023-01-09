@@ -27,6 +27,7 @@ export class GameOverScene extends Scene {
                 gs.player.isDead = false;
                 gs.player.fuel = 1000;
                 gs.player.oxygen = 1000;
+                gs.gameOverActive = false;
             }
             //that.scene.get('GameScene').scene.restart();
         })
