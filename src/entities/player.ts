@@ -92,10 +92,12 @@ export class Player extends Physics.Matter.Sprite {
                 case "fuel":
                     this[other.collectableType] = this[other.collectableType] + other.value;
                     this.scene.sound.add('fuel_change').play();
+                    this.ceilResources();
                     break;
                 case "oxygen":
                     this[other.collectableType] = this[other.collectableType] + other.value;
                     this.scene.sound.add('oxygen_change').play();
+                    this.ceilResources();
                     break;
                 case "blaster":
                     this.hasBlaster = true;

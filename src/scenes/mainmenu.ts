@@ -42,8 +42,6 @@ export class MainMenuScene extends Scene {
             that.scene.run("UIScene");
             that.scene.switch("GameScene");
         });
-        that.scene.run("UIScene");
-        that.scene.switch("GameScene");
     }
 
     update(time: number, delta: number) {
