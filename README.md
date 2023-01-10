@@ -6,7 +6,7 @@ Take care of your fuel and oxygen supply and harvest as many floppy disks as pos
 
 ## Ludum Dare
 
-This game was created for LD52 with the topic "Harvest", you can find the original submitted Version on the LD52 Branch, this branch fixes some (rare) crashes.
+This game was created for LD52 which had the topic "Harvest", you can find the (somewhat buggy) submitted Version on the LD52 branch and play it [here](https://ld52.wolkenwelten.net/).
 
 ## Requirements
 - Node JS (v18+) with NPM
