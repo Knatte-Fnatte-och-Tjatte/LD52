@@ -1,6 +1,7 @@
 *.zip
 *.tiled-session
 shell.nix
+public/assets/tileset_extruded.png
 
 **/node_modules/
 dist/
