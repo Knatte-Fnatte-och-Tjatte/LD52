@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "npm run extrude_tileset; vite build",
         "preview": "vite preview",
         "extrude_tileset": "tile-extruder --tileWidth 32 --tileHeight 32 --input public/assets/tileset.png",
         "typecheck": "tsc -p ./tsconfig.json --noEmit"
