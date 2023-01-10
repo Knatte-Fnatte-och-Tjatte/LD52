@@ -12,9 +12,10 @@ This game was created for LD52 which had the topic "Harvest", you can find the (
 - Node JS (v18+) with NPM
 
 ## Setup
-
+You need to run the build step once before starting a dev server so that the extruded tileset will be built:
 ```bash
 npm install
+npm build
 ```
 
 ## Development (VS Code)
