@@ -7,6 +7,10 @@
         "esModuleInterop": true,
 
         "noImplicitAny": true,
-        "strict": true
-    }
+        "strict": true,
+        "types": ["phaser"]
+    },
+    "files": [
+        "src/main.ts"
+    ]
 }
