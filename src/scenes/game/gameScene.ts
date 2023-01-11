@@ -156,10 +156,5 @@ export class GameScene extends Scene {
                this.gameOverActive = true;
             }
         }
-
-        if(this.player){
-            this.cameras.main.setAngle(-this.player.angle - 90);
-            this.cameras.main.setOrigin(0.5, 0.8);
-        }
     }
 }
