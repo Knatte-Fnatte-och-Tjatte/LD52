@@ -13,6 +13,9 @@ const main = () => {
         type: Phaser.WEBGL,
         width: 1280,
         height: 720,
+        input: {
+            gamepad: true
+        },
         scale: {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,

@@ -190,7 +190,31 @@ export class Player extends Physics.Matter.Sprite {
         const ndelta = delta / 16.0;
         const body = this.body as any;
         let curAngVel = body.angularVelocity;
-        if ((this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown)) {
+
+        let left = (this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown);
+        let right = (this.cursorKeys.right.isDown || this.wasdKeys.E.isDown);
+        let forward = (this.cursorKeys.up.isDown || this.wasdKeys.W.isDown);
+        let backward = (this.cursorKeys.down.isDown || this.wasdKeys.S.isDown);
+        let turnLeft = this.wasdKeys.A.isDown;
+        let turnRight = this.wasdKeys.D.isDown;
+        let blast = this.cursorKeys?.space.isDown;
+
+        if(this.scene.input.gamepad.gamepads[0]){
+            const gamepad = this.scene.input.gamepad.gamepads[0];
+            if(gamepad.left){left = true;}
+            if(gamepad.right){right = true;}
+            if(gamepad.up){forward = true;}
+            if(gamepad.down){backward = true;}
+            if(gamepad.X){turnLeft = true;}
+            if(gamepad.B){turnRight = true;}
+            if(gamepad.A){blast = true;}
+        }
+
+        if(blast){
+            this.blast();
+        }
+
+        if (left) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             curAngVel -= TURN_RATE * ndelta;
             this.thrusterRotateCCW.setVisible(true);
@@ -198,7 +222,7 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterRotateCCW.setVisible(false);
         }
 
-        if ((this.cursorKeys.right.isDown || this.wasdKeys.E.isDown)) {
+        if (right) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             curAngVel += TURN_RATE * ndelta;
             this.thrusterRotateCW.setVisible(true);
@@ -207,7 +231,7 @@ export class Player extends Physics.Matter.Sprite {
         }
         this.setAngularVelocity(curAngVel);
 
-        if ((this.cursorKeys.up.isDown || this.wasdKeys.W.isDown)) {
+        if (forward) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             this.thrust(ACCELERATION_RATE * ndelta);
             this.thrusterForward.setVisible(true);
@@ -215,7 +239,7 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterForward.setVisible(false);
         }
 
-        if ((this.cursorKeys.down.isDown || this.wasdKeys.S.isDown)) {
+        if (backward) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             this.thrustBack(ACCELERATION_RATE * ndelta);
             this.thrusterBackward.setVisible(true);
@@ -223,7 +247,7 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterBackward.setVisible(false);
         }
 
-        if (this.wasdKeys.A.isDown) {
+        if (turnLeft) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             this.thrustLeft(ACCELERATION_RATE * ndelta);
             this.thrusterStrafeLeft.setVisible(true);
@@ -231,7 +255,7 @@ export class Player extends Physics.Matter.Sprite {
             this.thrusterStrafeLeft.setVisible(false);
         }
 
-        if (this.wasdKeys.D.isDown) {
+        if (turnRight) {
             this.fuel -= ndelta * FUEL_CONSUMPTION;
             this.thrustRight(ACCELERATION_RATE * ndelta);
             this.thrusterStrafeRight.setVisible(true);

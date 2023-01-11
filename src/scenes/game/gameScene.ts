@@ -150,8 +150,5 @@ export class GameScene extends Scene {
                this.gameOverActive = true;
             }
         }
-        if(this.cursorKeys?.space.isDown){
-            this.player?.blast();
-        }
     }
 }
