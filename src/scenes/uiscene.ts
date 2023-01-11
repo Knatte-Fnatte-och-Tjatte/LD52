@@ -39,12 +39,6 @@ export class UIScene extends Scene {
         super(config);
     }
 
-    preload () {
-        if(!this.textures.exists('packed')){
-            this.load.multiatlas('packed', 'gfx/packed.json', 'gfx');
-         }
-    }
-
     create () {
         this.airbar = new Bar(this, 'bar_air', 16);
         this.fuelbar = new Bar(this, 'bar_fuel', 40);

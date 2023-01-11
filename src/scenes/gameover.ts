@@ -8,12 +8,6 @@ export class GameOverScene extends Scene {
         super(config);
     }
 
-    preload () {
-        if(!this.textures.exists('packed')){
-            this.load.multiatlas('packed', 'gfx/packed.json', 'gfx');
-         }
-    }
-
     create () {
         const that = this;
         const gs = that.scene.get("GameScene") as GameScene;

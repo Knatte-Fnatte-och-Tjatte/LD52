@@ -3,6 +3,7 @@
 shell.nix
 public/gfx/tileset_extruded.png
 *.MACHINE.GENERATED.png
+*.extruded.png
 
 **/node_modules/
 dist/

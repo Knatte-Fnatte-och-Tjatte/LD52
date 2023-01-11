@@ -49,29 +49,11 @@ export class GameScene extends Scene {
         this.gameOverActive = false;
     }
 
-    preload () {
-        if(!this.textures.exists('packed')){
-           this.load.multiatlas('packed', 'gfx/packed.json', 'gfx');
-        }
-        this.load.image('tileset', 'gfx/tileset.MACHINE.GENERATED.png');
-        this.load.image('lightmask', 'gfx/lightmask.png');
-        this.load.image('lightcone', 'gfx/lightcone.png');
-
-        this.load.tilemapTiledJSON('mainmap', 'maps/ship.tmj');
-
-        this.load.audio("plasma_death", "sfx/plasma_death.mp3");
-        this.load.audio("fuel_change", "sfx/fuel_change.mp3");
-        this.load.audio("oxygen_change", "sfx/oxygen_change.mp3");
-        this.load.audio("ambiance", "sfx/ambiance.mp3");
-        this.load.audio("typing", "sfx/typing.mp3")
-
+    create () {
         this.anims.create({key: 'blaster_blast_blasting', frames: animation_frames('blaster_blast', 4), frameRate:24});
         this.anims.create({key: 'plasma_glow_flicker', frames: animation_frames('plasma_glow', 4), frameRate:24, repeat:-1,});
         this.anims.create({key: 'plasma_glow_horiz_flicker', frames: animation_frames('plasma_glow_horiz', 4), frameRate:24, repeat:-1,});
         this.anims.create({key: 'plasma_tile_glow_flicker', frames: animation_frames('plasma_tile_glow', 4), frameRate:12, repeat:-1,});
-    }
-
-    create () {
 
         const worldWidth = 5000;
         const worldHeight = 5000;
