@@ -1,3 +1,4 @@
+
 import { GameObjects, Scene, Physics, Types, Math as PhaserMath } from "phaser";
 import { GameScene, WASDKeyMap } from "../scenes/game/gameScene";
 import { Asteroid } from "./asteroid";
@@ -37,6 +38,7 @@ export class Player extends Physics.Matter.Sprite {
     lightmask: GameObjects.Sprite;
     lightcone: GameObjects.Sprite;
     blasting: GameObjects.Sprite;
+    blastSensor: GameObjects.Sprite;
 
     stunned = -1.0;
     isDead = false;
@@ -53,7 +55,6 @@ export class Player extends Physics.Matter.Sprite {
     cursorKeys: Types.Input.Keyboard.CursorKeys;
     wasdKeys: WASDKeyMap;
 
-
     blast() {
         if(!this.hasBlaster){return;}
         if(this.isDead || this.stunned > 0.0){return;}
@@ -61,27 +62,14 @@ export class Player extends Physics.Matter.Sprite {
             const that = this;
             this.lastBlast = this.scene.time.now;
             this.blasting.setVisible(true);
+            const body = this.blastSensor.body as MatterJS.BodyType;
             this.blasting.play('blaster_blast_blasting').on('animationcomplete', () => {
                 that.blasting.setVisible(false);
+                body.collisionFilter.mask = 0;
             });
+            body.collisionFilter.mask = 2;
             this.thrustBack(0.7);
             this.scene.sound.add('plasma_death').play();
-
-            const ox = Math.cos(this.angle * Math.PI / 180);
-            const oy = Math.sin(this.angle * Math.PI / 180);
-            const px = this.x + ox*42;
-            const py = this.y + oy*42;
-            const gs = this.scene as GameScene;
-            const tx = (px / 32)|0;
-            const ty = (px / 32)|0;
-            if(gs.mapLayer){
-                const tile = gs.mapLayer.getTileAtWorldXY(px,py);
-                if(tile?.index === 19){
-                    gs.mapLayer.putTileAtWorldXY(20,px,py);
-                    const physics = tile.physics as any;
-                    physics?.matterBody?.destroy();
-                }
-            }
         }
     }
 
@@ -143,6 +131,24 @@ export class Player extends Physics.Matter.Sprite {
         this.oxygen = Math.min(this.oxygen, this.oxygenMax);
     }
 
+    blasterCollide(pair: any) {
+        const gs = this.scene as GameScene;
+        const tileBody = pair.bodyA.label === "BlasterSensor" ? pair.bodyB : pair.bodyA;
+        const tile = tileBody.gameObject.tile;
+
+        const px = tile.x * tile.width;
+        const py = tile.y * tile.height;
+        if(gs.mapLayer){
+            const tile = gs.mapLayer.getTileAtWorldXY(px,py);
+            if(tile?.index === 19){
+                gs.mapLayer.putTileAtWorldXY(20,px,py);
+                const physics = tile.physics as any;
+                physics?.matterBody?.destroy();
+            }
+        }
+        console.log(tile);
+    }
+
     constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys, wasdKeys: WASDKeyMap) {
         super(scene.matter.world, x, y, 'packed', 'player');
         scene.add.existing(this);
@@ -172,7 +178,16 @@ export class Player extends Physics.Matter.Sprite {
         this.collisionVelocity = this.body.velocity;
         this.didCollide = false;
 
-        this.blasting = scene.add.sprite(x,y,'blaster_blast',0).setDepth(2).setVisible(false);
+        this.blastSensor = gs.matter.add.sprite(x,y,'packed','void', { isSensor: true }).setScale(2.0, 0.5);
+        const body = this.blastSensor.body as MatterJS.BodyType;
+        console.log(body);
+        body.label = "BlasterSensor";
+        body.collisionFilter.group = 0;
+        body.collisionFilter.category = 2;
+        body.collisionFilter.mask = 0;
+        body.onCollideActiveCallback = this.blasterCollide.bind(this);
+
+        this.blasting = scene.add.sprite(x,y,'packed','blaster_blast-0').setDepth(2).setVisible(false);
         this.lightmask = scene.add.sprite(x,y,'lightmask').setDepth(1);
         this.lightcone = scene.add.sprite(x,y,'lightcone').setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
 
@@ -264,6 +279,15 @@ export class Player extends Physics.Matter.Sprite {
         }
     }
 
+    updateSensors() {
+        const ox = Math.cos(this.rotation);
+        const oy = Math.sin(this.rotation);
+        const r = 32;
+        this.blastSensor.x = this.x + ox * r;
+        this.blastSensor.y = this.y + oy * r;
+        this.blastSensor.rotation = this.rotation;
+    }
+
     updateChildren() {
         const children = [this.thrusterForward, this.thrusterBackward, this.thrusterRotateCCW, this.thrusterRotateCW, this.thrusterStrafeLeft, this.thrusterStrafeRight, this.lightmask, this.lightcone, this.blasting];
         for(const t of children){
@@ -271,6 +295,7 @@ export class Player extends Physics.Matter.Sprite {
             t.y = this.y;
             t.angle = this.angle;
         }
+        this.updateSensors();
     }
 
     update(time: number, delta: number) {

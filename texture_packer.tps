@@ -183,6 +183,7 @@
             <key type="filename">raw_assets/packed_sprites/plasma_glow_horiz/plasma_glow_horiz-2.png</key>
             <key type="filename">raw_assets/packed_sprites/plasma_glow_horiz/plasma_glow_horiz-3.png</key>
             <key type="filename">raw_assets/packed_sprites/transponder.png</key>
+            <key type="filename">raw_assets/packed_sprites/void.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

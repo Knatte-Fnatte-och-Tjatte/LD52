@@ -77,6 +77,11 @@ export class GameScene extends Scene {
                     new TileConduit(that, tileWorldPos.x + 16, tileWorldPos.y + 16);
                     break;
                 }
+                case 19: {
+                    const physics = tile.physics as any;
+                    physics.matterBody.body.collisionFilter.category = 2;
+                    physics.matterBody.body.collisionFilter.group = 0;
+                }
             }
         });
 

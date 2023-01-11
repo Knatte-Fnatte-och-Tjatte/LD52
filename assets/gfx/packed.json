@@ -220,6 +220,27 @@
 					}
 				},
 				{
+					"filename": "void",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 3,
+						"h": 3
+					},
+					"frame": {
+						"x": 495,
+						"y": 73,
+						"w": 3,
+						"h": 3
+					}
+				},
+				{
 					"filename": "thrust_rotate_ccw",
 					"rotated": false,
 					"trimmed": true,
@@ -855,6 +876,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:988afc2456e919918abeaf0d3d7bccb2:4bd2006d649d06c8fd4e85cabd271c76:de62c4130a72712ae995d05d7f4a14e5$"
+		"smartupdate": "$TexturePacker:SmartUpdate:a1949a235d273e84d82ecb1b1dfe22f3:ca1459305b4c7f3e943758b47776a687:de62c4130a72712ae995d05d7f4a14e5$"
 	}
 }
