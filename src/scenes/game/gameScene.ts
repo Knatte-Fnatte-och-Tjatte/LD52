@@ -66,6 +66,7 @@ export class GameScene extends Scene {
         const tiles = this.map.addTilesetImage('ship', 'tileset', 32, 32, 1, 2)
         const layer = this.map.createLayer(this.map.layers[0].name, tiles);
         this.mapLayer = layer;
+        layer.setCullPadding(20,20);
 
         layer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(layer);
@@ -154,6 +155,11 @@ export class GameScene extends Scene {
                this.scene.run("GameOverScene");
                this.gameOverActive = true;
             }
+        }
+
+        if(this.player){
+            this.cameras.main.setAngle(-this.player.angle - 90);
+            this.cameras.main.setOrigin(0.5, 0.8);
         }
     }
 }
