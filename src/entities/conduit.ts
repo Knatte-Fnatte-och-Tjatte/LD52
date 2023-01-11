@@ -1,5 +1,5 @@
 import { GameObjects, Physics } from "phaser";
-import { GameScene } from "../scenes/gamescene";
+import { GameScene } from "../scenes/game/gameScene";
 
 export class Conduit extends Physics.Matter.Sprite {
     glow: GameObjects.Sprite;

@@ -1,5 +1,5 @@
 import { GameObjects, Scene, Physics, Types, Math as PhaserMath } from "phaser";
-import { GameScene, WASDKeyMap } from "../scenes/gamescene";
+import { GameScene, WASDKeyMap } from "../scenes/game/gameScene";
 import { Asteroid } from "./asteroid";
 import { Collectable } from "./collectable";
 import { Conduit } from "./conduit";
@@ -124,7 +124,7 @@ export class Player extends Physics.Matter.Sprite {
             this.floppies++;
             if(String(other.message).trim() !== ''){
                 this.scene.sound.add('typing').play();
-                //this.scene.events.emit('readFloppy', other.message);
+                this.scene.events.emit('readFloppy', other.message);
             }
             other.destroy();
         } else if(other?.tile) {

@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser";
-import { GameScene } from "../scenes/gamescene";
+import { GameScene } from "../scenes/game/gameScene";
 
 export class TileConduit extends GameObjects.Sprite {
     constructor (scene:GameScene, x:number, y:number) {

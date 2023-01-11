@@ -1,5 +1,5 @@
 import { GameObjects, Scene } from 'phaser';
-import { GameScene } from './gamescene';
+import { GameScene } from '../game/gameScene';
 
 export class Bar {
     value: number;

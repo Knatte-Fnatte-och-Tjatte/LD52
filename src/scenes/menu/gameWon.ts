@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { GameScene } from './gamescene';
+import { GameScene } from '../game/gameScene';
 
 export class GameWonScene extends Scene {
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {

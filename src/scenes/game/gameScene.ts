@@ -1,18 +1,11 @@
 import { GameObjects, Scene, Tilemaps, Types } from 'phaser';
-import { Player } from '../entities/player';
-import { Wreckage } from '../entities/wreckage';
-import { Collectable, CollectableType } from '../entities/collectable';
-import { Asteroid } from '../entities/asteroid';
-import { Conduit } from '../entities/conduit';
-import { TileConduit } from '../entities/tileConduit';
-import { Floppy } from '../entities/floppy';
-
-const ASTEROID_SHOWER_INTERVAL = 1.0 * 60.0 * 1000.0;
-
-const normalize = (v:[number, number]) => {
-    const m = Math.max(v[0],v[1]);
-    return [v[0]/m,v[1]/m];
-};
+import { Player } from '../../entities/player';
+import { Wreckage } from '../../entities/wreckage';
+import { Collectable } from '../../entities/collectable';
+import { Asteroid } from '../../entities/asteroid';
+import { Conduit } from '../../entities/conduit';
+import { TileConduit } from '../../entities/tileConduit';
+import { Floppy } from '../../entities/floppy';
 
 export type WASDKeyMap = {
     W: Phaser.Input.Keyboard.Key,

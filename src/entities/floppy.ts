@@ -1,5 +1,5 @@
 import { Physics } from "phaser";
-import { GameScene } from "../scenes/gamescene";
+import { GameScene } from "../scenes/game/gameScene";
 
 export class Floppy extends Physics.Matter.Sprite {
     message: string[];

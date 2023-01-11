@@ -1,5 +1,5 @@
 import { Physics } from "phaser";
-import { GameScene } from "../scenes/gamescene";
+import { GameScene } from "../scenes/game/gameScene";
 
 export type CollectableType = "oxygen" | "fuel" | "blaster" | "transponder";
 

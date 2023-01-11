@@ -1,5 +1,5 @@
 import { Physics } from "phaser";
-import { GameScene } from "../scenes/gamescene";
+import { GameScene } from "../scenes/game/gameScene";
 
 const WRECKAGE_MASS = 1000.0;
 const WRECKAGE_BOUNCE = 0.2;

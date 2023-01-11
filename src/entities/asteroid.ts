@@ -1,5 +1,5 @@
 import { Physics } from "phaser";
-import { GameScene } from "../scenes/gamescene";
+import { GameScene } from "../scenes/game/gameScene";
 
 const ASTEROID_MASS = 500.0;
 const ASTEROID_BOUNCE = 0.2;

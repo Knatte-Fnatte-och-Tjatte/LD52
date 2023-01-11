@@ -1,11 +1,12 @@
 import './style.css';
 
 import { Game, Types } from 'phaser';
-import { GameScene } from './scenes/gamescene';
-import { UIScene } from './scenes/uiscene';
-import { GameOverScene } from './scenes/gameover';
-import { MainMenuScene } from './scenes/mainmenu';
-import { GameWonScene } from './scenes/gamewon';
+import { GameScene } from './scenes/game/gameScene';
+import { UIScene } from './scenes/ui/uiScene';
+import { GameOverScene } from './scenes/menu/gameOver';
+import { MainMenuScene } from './scenes/menu/mainMenu';
+import { GameWonScene } from './scenes/menu/gameWon';
+import { LoadingScreenScene } from './scenes/menu/loadingScreen';
 
 const main = () => {
     const config: Types.Core.GameConfig = {
@@ -24,7 +25,7 @@ const main = () => {
                 },
             }
         },
-        scene: [ MainMenuScene, GameScene, UIScene, GameOverScene, GameWonScene ]
+        scene: [ LoadingScreenScene , MainMenuScene, GameScene, UIScene, GameOverScene, GameWonScene ]
     };
     const game = new Game(config);
 };
