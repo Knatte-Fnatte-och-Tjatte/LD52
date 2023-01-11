@@ -1,7 +1,5 @@
-import { Body } from "matter";
-import { Textures, GameObjects, Scene, Physics } from "phaser";
+import { Physics } from "phaser";
 import { GameScene } from "../scenes/gamescene";
-import { Player } from "./player";
 
 export type CollectableType = "oxygen" | "fuel" | "blaster" | "transponder";
 
@@ -13,7 +11,7 @@ export class Collectable extends Physics.Matter.Sprite {
     value: number;
 
     constructor (scene:GameScene, x:number, y:number, value: number, collectableType: CollectableType) {
-        super(scene.matter.world, x, y, collectableType);
+        super(scene.matter.world, x, y, 'packed', collectableType);
         this.scene.add.existing(this);
 
         this.setFrictionAir(0);

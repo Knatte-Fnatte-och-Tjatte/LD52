@@ -3792,7 +3792,7 @@
         {
          "columns":8,
          "firstgid":1,
-         "image":"..\/assets\/tileset.png",
+         "image":"..\/gfx\/tileset.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,

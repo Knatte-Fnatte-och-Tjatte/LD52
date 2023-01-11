@@ -1,5 +1,4 @@
-import { Body } from "matter";
-import { Textures, GameObjects, Scene, Physics } from "phaser";
+import { Physics } from "phaser";
 import { GameScene } from "../scenes/gamescene";
 
 const WRECKAGE_MASS = 1000.0;
@@ -8,7 +7,7 @@ const WRECKAGE_BOUNCE = 0.2;
 export class Wreckage extends Physics.Matter.Sprite {
 
     constructor (scene:GameScene, x:number, y:number) {
-        super(scene.matter.world, x, y, 'hull');
+        super(scene.matter.world, x, y, 'packed', 'hull');
         this.scene.add.existing(this);
 
         this.setFrictionAir(0);

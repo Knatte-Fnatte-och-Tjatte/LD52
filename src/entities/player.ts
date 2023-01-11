@@ -124,7 +124,7 @@ export class Player extends Physics.Matter.Sprite {
             this.floppies++;
             if(String(other.message).trim() !== ''){
                 this.scene.sound.add('typing').play();
-                this.scene.events.emit('readFloppy', other.message);
+                //this.scene.events.emit('readFloppy', other.message);
             }
             other.destroy();
         } else if(other?.tile) {
@@ -144,7 +144,7 @@ export class Player extends Physics.Matter.Sprite {
     }
 
     constructor (scene:Scene, x:number, y:number, cursorKeys: Types.Input.Keyboard.CursorKeys, wasdKeys: WASDKeyMap) {
-        super(scene.matter.world, x, y, 'player');
+        super(scene.matter.world, x, y, 'packed', 'player');
         scene.add.existing(this);
         const gs = scene as GameScene;
         this.setBody({type: 'circle', radius: 36});
@@ -160,12 +160,12 @@ export class Player extends Physics.Matter.Sprite {
         this.setRotation(Math.PI * 0.5);
         this.setMass(PLAYER_MASS);
 
-        this.thrusterForward = scene.add.sprite(x,y,'thrust_forward').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterBackward = scene.add.sprite(x,y,'thrust_backward').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterStrafeLeft = scene.add.sprite(x,y,'thrust_strafe_left').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterStrafeRight = scene.add.sprite(x,y,'thrust_strafe_right').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterRotateCW = scene.add.sprite(x,y,'thrust_rotate_cw').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterRotateCCW = scene.add.sprite(x,y,'thrust_rotate_ccw').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterForward = scene.add.sprite(x,y,'packed','thrust_forward').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterBackward = scene.add.sprite(x,y,'packed','thrust_backward').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterStrafeLeft = scene.add.sprite(x,y,'packed','thrust_strafe_left').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterStrafeRight = scene.add.sprite(x,y,'packed','thrust_strafe_right').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterRotateCW = scene.add.sprite(x,y,'packed','thrust_rotate_cw').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterRotateCCW = scene.add.sprite(x,y,'packed','thrust_rotate_ccw').setDepth(2).setScale(0.5).setVisible(false);
 
         this.cursorKeys = cursorKeys;
         this.wasdKeys = wasdKeys;

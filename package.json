@@ -7,7 +7,7 @@
         "dev": "vite",
         "build": "npm run extrude_tileset; vite build",
         "preview": "vite preview",
-        "extrude_tileset": "tile-extruder --tileWidth 32 --tileHeight 32 --input public/assets/tileset.png",
+        "extrude_tileset": "tile-extruder --tileWidth 32 --tileHeight 32 --input raw_assets/tileset.png --output assets/gfx/tileset.MACHINE.GENERATED.png",
         "typecheck": "tsc -p ./tsconfig.json --noEmit"
     },
     "author": "Benjamin Vincent Schulenburg <ben@wolkenwelten.net>",

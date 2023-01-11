@@ -8,11 +8,11 @@ export class Bar {
 
     constructor (scene:Scene, texture: string, y:number) {
         this.value = 1.0;
-        this.bg = scene.add.sprite(16, y, 'bar_bg');
+        this.bg = scene.add.sprite(16, y, 'packed', 'bar_bg');
         this.bg.displayOriginX = 0;
         this.bg.displayOriginY = 0;
 
-        this.bar = scene.add.sprite(16, y, texture);
+        this.bar = scene.add.sprite(16, y, 'packed', texture);
         this.bar.displayOriginX = 0;
         this.bar.displayOriginY = 0;
     }
@@ -40,11 +40,9 @@ export class UIScene extends Scene {
     }
 
     preload () {
-        this.load.image('bar_bg', 'assets/bar_bg.png');
-        this.load.image('bar_air', 'assets/bar_air.png');
-        this.load.image('bar_fuel', 'assets/bar_fuel.png');
-        this.load.image('floppy', 'assets/floppy.png');
-        this.load.image('blaster', 'assets/blaster.png');
+        if(!this.textures.exists('packed')){
+            this.load.multiatlas('packed', 'gfx/packed.json', 'gfx');
+         }
     }
 
     create () {
@@ -53,9 +51,9 @@ export class UIScene extends Scene {
         this.stunned = this.add.text(280, 16, "Stunned");
         this.stunned.setVisible(false);
 
-        this.floppyIcon = this.add.image(28, 80, 'floppy');
+        this.floppyIcon = this.add.image(28, 80, 'packed', 'floppy');
         this.floppyScore = this.add.text(48, 70, '0');
-        this.blasterIcon = this.add.image(128, 80, 'blaster').setVisible(false);
+        this.blasterIcon = this.add.image(128, 80, 'packed', 'blaster').setVisible(false);
         this.logEntry = this.add.text(16, 104, '', {color: '#3E1'});
 
         const game = this.scene.get("GameScene");

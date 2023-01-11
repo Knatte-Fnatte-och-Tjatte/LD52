@@ -1,13 +1,11 @@
-import { Body } from "matter";
-import { Textures, GameObjects, Scene, Physics } from "phaser";
+import { Physics } from "phaser";
 import { GameScene } from "../scenes/gamescene";
-import { Player } from "./player";
 
 export class Floppy extends Physics.Matter.Sprite {
     message: string[];
 
     constructor (scene:GameScene, x:number, y:number, message: string[]) {
-        super(scene.matter.world, x, y, 'floppy');
+        super(scene.matter.world, x, y, 'packed', 'floppy');
         this.scene.add.existing(this);
 
         this.setFrictionAir(0);

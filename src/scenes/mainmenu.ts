@@ -29,14 +29,16 @@ export class MainMenuScene extends Scene {
     }
 
     preload () {
-        this.load.image('button_start', 'assets/button_start.png');
+        if(!this.textures.exists('packed')){
+            this.load.multiatlas('packed', 'gfx/packed.json', 'gfx');
+         }
     }
 
     create () {
         const titleText = this.add.text(1280/2 - 74, 64, ["Space Harvest Wreckage","Extreme 2001"], { align: 'center'});
         const introText = this.add.text(1280/2 - 320, 128, introTextArr, { align: 'justify', fixedWidth: 640});
 
-        const startButton = this.add.image(1280/2, 720 - 128, 'button_start');
+        const startButton = this.add.image(1280/2, 720 - 128, 'packed', 'button_start');
         const that = this;
         startButton.setInteractive().on("pointerdown", () => {
             that.scene.run("UIScene");

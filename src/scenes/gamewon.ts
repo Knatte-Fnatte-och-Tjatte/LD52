@@ -9,7 +9,9 @@ export class GameWonScene extends Scene {
     }
 
     preload () {
-        this.load.image('button_try_again', 'assets/button_try_again.png');
+        if(!this.textures.exists('packed')){
+            this.load.multiatlas('packed', 'gfx/packed.json', 'gfx');
+         }
     }
 
     create () {
@@ -18,7 +20,7 @@ export class GameWonScene extends Scene {
         const deathCount = gs.player?.deathCount;
         this.add.text(1280/2 - 48, 64, ["Congratulations", "", "You won!","",`And only died ${deathCount} times`], { align: 'center'});
 
-        const tryAgainButton = this.add.image(1280/2, 720 - 128, 'button_try_again');
+        const tryAgainButton = this.add.image(1280/2, 720 - 128, 'packed', 'button_try_again');
         tryAgainButton.setInteractive().on("pointerdown", () => {
             that.scene.stop('GameWonScene');
             that.scene.get('GameScene').scene.restart();

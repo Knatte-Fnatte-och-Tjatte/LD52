@@ -1,5 +1,4 @@
-import { Body } from "matter";
-import { Textures, GameObjects, Scene, Physics } from "phaser";
+import { Physics } from "phaser";
 import { GameScene } from "../scenes/gamescene";
 
 const ASTEROID_MASS = 500.0;
@@ -19,7 +18,7 @@ export class Asteroid extends Physics.Matter.Sprite {
                 mass *= 2.0;
                 break;
         }
-        super(scene.matter.world, x, y, sprite);
+        super(scene.matter.world, x, y, 'packed', sprite);
         this.scene.add.existing(this);
 
         this.setFrictionAir(0);

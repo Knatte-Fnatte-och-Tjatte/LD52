@@ -9,8 +9,9 @@ export class GameOverScene extends Scene {
     }
 
     preload () {
-        this.load.image('button_try_again', 'assets/button_try_again.png');
-        this.load.image('button_start_over', 'assets/button_start_over.png');
+        if(!this.textures.exists('packed')){
+            this.load.multiatlas('packed', 'gfx/packed.json', 'gfx');
+         }
     }
 
     create () {
@@ -19,7 +20,7 @@ export class GameOverScene extends Scene {
         const deathCount = gs.player?.deathCount;
         const gameOverText = this.add.text(1280/2 - 96, 64, ["Game Over", "", `Death Count: ${deathCount}`], { align: 'center'});
 
-        const tryAgainButton = this.add.image(1280/2, 720 - 128, 'button_try_again');
+        const tryAgainButton = this.add.image(1280/2, 720 - 128, 'packed', 'button_try_again');
         tryAgainButton.setInteractive().on("pointerdown", () => {
             that.scene.stop('GameOverScene');
             if(gs.player){
@@ -31,7 +32,7 @@ export class GameOverScene extends Scene {
             //that.scene.get('GameScene').scene.restart();
         });
 
-        const startOverButton = this.add.image(1280/2, 720 - 178, 'button_start_over');
+        const startOverButton = this.add.image(1280/2, 720 - 178, 'packed', 'button_start_over');
         startOverButton.setInteractive().on("pointerdown", () => {
             that.scene.stop('GameOverScene');
             that.scene.get('GameScene').scene.restart();
