@@ -30,7 +30,8 @@ export class UIScene extends Scene {
     floppyIcon?: GameObjects.Image;
     blasterIcon?: GameObjects.Image;
     floppyScore?: GameObjects.Text;
-    logEntry?: GameObjects.Text;
+    logEntry?: GameObjects.DOMElement;
+    $logEntry?: HTMLElement;
     lastFloppyScore = 0;
 
     constructor (config: Phaser.Types.Scenes.SettingsConfig) {
@@ -48,13 +49,17 @@ export class UIScene extends Scene {
         this.floppyIcon = this.add.image(28, 80, 'packed', 'floppy');
         this.floppyScore = this.add.text(48, 70, '0');
         this.blasterIcon = this.add.image(128, 80, 'packed', 'blaster').setVisible(false);
-        this.logEntry = this.add.text(16, 104, '', {color: '#3E1'});
+
+
+        this.$logEntry = document.createElement('div');
+        this.$logEntry.classList.add("log-entries");
+        this.logEntry = this.add.dom(16, 104, this.$logEntry).setOrigin(0,0);
 
         const game = this.scene.get("GameScene");
         const that = this;
         game.events.on('readFloppy', (msg:string[]) => {
-            if(that.logEntry){
-                that.logEntry.setText(msg);
+            if(that.$logEntry){
+                that.$logEntry.innerText = msg.join("\n");
             }
         });
     }

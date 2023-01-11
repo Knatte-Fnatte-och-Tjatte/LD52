@@ -31,27 +31,6 @@
 					}
 				},
 				{
-					"filename": "button_start",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 128,
-						"h": 32
-					},
-					"frame": {
-						"x": 257,
-						"y": 1,
-						"w": 128,
-						"h": 32
-					}
-				},
-				{
 					"filename": "player",
 					"rotated": false,
 					"trimmed": false,
@@ -66,77 +45,14 @@
 						"h": 100
 					},
 					"frame": {
-						"x": 387,
+						"x": 257,
 						"y": 1,
 						"w": 106,
 						"h": 100
 					}
 				},
 				{
-					"filename": "button_start_over",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 128,
-						"h": 32
-					},
-					"frame": {
-						"x": 257,
-						"y": 35,
-						"w": 128,
-						"h": 32
-					}
-				},
-				{
-					"filename": "button_try_again",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 128,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 128,
-						"h": 32
-					},
-					"frame": {
-						"x": 257,
-						"y": 69,
-						"w": 128,
-						"h": 32
-					}
-				},
-				{
-					"filename": "asteroid_tiny",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 16,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 16,
-						"h": 16
-					},
-					"frame": {
-						"x": 495,
-						"y": 1,
-						"w": 16,
-						"h": 16
-					}
-				},
-				{
-					"filename": "thrust_strafe_left",
+					"filename": "thrust_rotate_ccw",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -144,20 +60,41 @@
 						"h": 120
 					},
 					"spriteSourceSize": {
-						"x": 28,
-						"y": 94,
-						"w": 15,
-						"h": 25
+						"x": 3,
+						"y": 31,
+						"w": 91,
+						"h": 52
 					},
 					"frame": {
-						"x": 495,
-						"y": 19,
-						"w": 15,
-						"h": 25
+						"x": 365,
+						"y": 1,
+						"w": 91,
+						"h": 52
 					}
 				},
 				{
-					"filename": "thrust_strafe_right",
+					"filename": "plasma_tile_glow/plasma_tile_glow-0",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 63,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 0,
+						"w": 52,
+						"h": 64
+					},
+					"frame": {
+						"x": 458,
+						"y": 1,
+						"w": 52,
+						"h": 64
+					}
+				},
+				{
+					"filename": "thrust_rotate_cw",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -165,16 +102,79 @@
 						"h": 120
 					},
 					"spriteSourceSize": {
-						"x": 29,
-						"y": 1,
-						"w": 14,
-						"h": 25
+						"x": 3,
+						"y": 37,
+						"w": 91,
+						"h": 52
 					},
 					"frame": {
-						"x": 495,
-						"y": 46,
-						"w": 14,
-						"h": 25
+						"x": 365,
+						"y": 55,
+						"w": 91,
+						"h": 52
+					}
+				},
+				{
+					"filename": "plasma_tile_glow/plasma_tile_glow-1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 63,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 0,
+						"w": 52,
+						"h": 64
+					},
+					"frame": {
+						"x": 458,
+						"y": 67,
+						"w": 52,
+						"h": 64
+					}
+				},
+				{
+					"filename": "blaster",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 64,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 1,
+						"w": 64,
+						"h": 27
+					},
+					"frame": {
+						"x": 257,
+						"y": 103,
+						"w": 64,
+						"h": 27
+					}
+				},
+				{
+					"filename": "asteroid",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 32
+					},
+					"frame": {
+						"x": 323,
+						"y": 103,
+						"w": 32,
+						"h": 32
 					}
 				},
 				{
@@ -192,8 +192,8 @@
 						"h": 3
 					},
 					"frame": {
-						"x": 495,
-						"y": 73,
+						"x": 357,
+						"y": 103,
 						"w": 3,
 						"h": 3
 					}
@@ -213,8 +213,8 @@
 						"h": 3
 					},
 					"frame": {
-						"x": 495,
-						"y": 73,
+						"x": 357,
+						"y": 103,
 						"w": 3,
 						"h": 3
 					}
@@ -234,115 +234,10 @@
 						"h": 3
 					},
 					"frame": {
-						"x": 495,
-						"y": 73,
+						"x": 357,
+						"y": 103,
 						"w": 3,
 						"h": 3
-					}
-				},
-				{
-					"filename": "thrust_rotate_ccw",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 126,
-						"h": 120
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 31,
-						"w": 91,
-						"h": 52
-					},
-					"frame": {
-						"x": 257,
-						"y": 103,
-						"w": 91,
-						"h": 52
-					}
-				},
-				{
-					"filename": "thrust_rotate_cw",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 126,
-						"h": 120
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 37,
-						"w": 91,
-						"h": 52
-					},
-					"frame": {
-						"x": 350,
-						"y": 103,
-						"w": 91,
-						"h": 52
-					}
-				},
-				{
-					"filename": "blaster",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 64,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 1,
-						"w": 64,
-						"h": 27
-					},
-					"frame": {
-						"x": 443,
-						"y": 103,
-						"w": 64,
-						"h": 27
-					}
-				},
-				{
-					"filename": "plasma_tile_glow/plasma_tile_glow-0",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 63,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 6,
-						"y": 0,
-						"w": 52,
-						"h": 64
-					},
-					"frame": {
-						"x": 443,
-						"y": 132,
-						"w": 52,
-						"h": 64
-					}
-				},
-				{
-					"filename": "plasma_tile_glow/plasma_tile_glow-1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 63,
-						"h": 64
-					},
-					"spriteSourceSize": {
-						"x": 7,
-						"y": 0,
-						"w": 52,
-						"h": 64
-					},
-					"frame": {
-						"x": 257,
-						"y": 157,
-						"w": 52,
-						"h": 64
 					}
 				},
 				{
@@ -360,8 +255,8 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 311,
-						"y": 157,
+						"x": 257,
+						"y": 132,
 						"w": 52,
 						"h": 64
 					}
@@ -381,14 +276,14 @@
 						"h": 64
 					},
 					"frame": {
-						"x": 365,
-						"y": 157,
+						"x": 357,
+						"y": 109,
 						"w": 52,
 						"h": 64
 					}
 				},
 				{
-					"filename": "transponder",
+					"filename": "plasma_glow_horiz/plasma_glow_horiz-0",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -396,37 +291,58 @@
 						"h": 32
 					},
 					"spriteSourceSize": {
-						"x": 6,
-						"y": 0,
-						"w": 20,
-						"h": 31
+						"x": 0,
+						"y": 2,
+						"w": 32,
+						"h": 27
 					},
 					"frame": {
-						"x": 419,
-						"y": 157,
-						"w": 20,
-						"h": 31
+						"x": 311,
+						"y": 137,
+						"w": 32,
+						"h": 27
 					}
 				},
 				{
-					"filename": "floppy",
+					"filename": "plasma_glow_horiz/plasma_glow_horiz-1",
 					"rotated": false,
-					"trimmed": false,
+					"trimmed": true,
 					"sourceSize": {
-						"w": 20,
-						"h": 22
+						"w": 32,
+						"h": 32
 					},
 					"spriteSourceSize": {
 						"x": 0,
-						"y": 0,
-						"w": 20,
-						"h": 22
+						"y": 2,
+						"w": 32,
+						"h": 27
 					},
 					"frame": {
-						"x": 419,
-						"y": 190,
-						"w": 20,
-						"h": 22
+						"x": 311,
+						"y": 166,
+						"w": 32,
+						"h": 27
+					}
+				},
+				{
+					"filename": "plasma_glow_horiz/plasma_glow_horiz-2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 2,
+						"w": 32,
+						"h": 27
+					},
+					"frame": {
+						"x": 411,
+						"y": 109,
+						"w": 32,
+						"h": 27
 					}
 				},
 				{
@@ -444,31 +360,31 @@
 						"h": 20
 					},
 					"frame": {
-						"x": 441,
-						"y": 198,
+						"x": 445,
+						"y": 133,
 						"w": 52,
 						"h": 20
 					}
 				},
 				{
-					"filename": "thrust_backward",
+					"filename": "plasma_glow_horiz/plasma_glow_horiz-3",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 126,
-						"h": 120
+						"w": 32,
+						"h": 32
 					},
 					"spriteSourceSize": {
-						"x": 76,
-						"y": 31,
-						"w": 18,
-						"h": 58
+						"x": 0,
+						"y": 2,
+						"w": 32,
+						"h": 27
 					},
 					"frame": {
-						"x": 419,
-						"y": 214,
-						"w": 18,
-						"h": 58
+						"x": 411,
+						"y": 138,
+						"w": 32,
+						"h": 27
 					}
 				},
 				{
@@ -486,10 +402,52 @@
 						"h": 15
 					},
 					"frame": {
-						"x": 439,
-						"y": 220,
+						"x": 445,
+						"y": 155,
 						"w": 49,
 						"h": 15
+					}
+				},
+				{
+					"filename": "thrust_strafe_left",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 126,
+						"h": 120
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 94,
+						"w": 15,
+						"h": 25
+					},
+					"frame": {
+						"x": 496,
+						"y": 155,
+						"w": 15,
+						"h": 25
+					}
+				},
+				{
+					"filename": "plasma_glow/plasma_glow-0",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 27,
+						"h": 32
+					},
+					"frame": {
+						"x": 411,
+						"y": 167,
+						"w": 27,
+						"h": 32
 					}
 				},
 				{
@@ -507,10 +465,31 @@
 						"h": 12
 					},
 					"frame": {
-						"x": 439,
-						"y": 237,
+						"x": 440,
+						"y": 172,
 						"w": 49,
 						"h": 12
+					}
+				},
+				{
+					"filename": "transponder",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 0,
+						"w": 20,
+						"h": 31
+					},
+					"frame": {
+						"x": 491,
+						"y": 182,
+						"w": 20,
+						"h": 31
 					}
 				},
 				{
@@ -528,8 +507,8 @@
 						"h": 16
 					},
 					"frame": {
-						"x": 439,
-						"y": 251,
+						"x": 440,
+						"y": 186,
 						"w": 48,
 						"h": 16
 					}
@@ -549,10 +528,52 @@
 						"h": 16
 					},
 					"frame": {
-						"x": 439,
-						"y": 269,
+						"x": 345,
+						"y": 175,
 						"w": 48,
 						"h": 16
+					}
+				},
+				{
+					"filename": "thrust_strafe_right",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 126,
+						"h": 120
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 1,
+						"w": 14,
+						"h": 25
+					},
+					"frame": {
+						"x": 395,
+						"y": 175,
+						"w": 14,
+						"h": 25
+					}
+				},
+				{
+					"filename": "plasma_glow/plasma_glow-1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 0,
+						"w": 27,
+						"h": 32
+					},
+					"frame": {
+						"x": 411,
+						"y": 201,
+						"w": 27,
+						"h": 32
 					}
 				},
 				{
@@ -570,8 +591,8 @@
 						"h": 12
 					},
 					"frame": {
-						"x": 257,
-						"y": 223,
+						"x": 345,
+						"y": 193,
 						"w": 48,
 						"h": 12
 					}
@@ -591,136 +612,52 @@
 						"h": 45
 					},
 					"frame": {
-						"x": 307,
-						"y": 223,
+						"x": 440,
+						"y": 204,
 						"w": 47,
 						"h": 45
 					}
 				},
 				{
-					"filename": "asteroid",
+					"filename": "floppy",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 32,
-						"h": 32
+						"w": 20,
+						"h": 22
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 32,
-						"h": 32
+						"w": 20,
+						"h": 22
 					},
 					"frame": {
-						"x": 257,
-						"y": 237,
-						"w": 32,
-						"h": 32
+						"x": 489,
+						"y": 215,
+						"w": 20,
+						"h": 22
 					}
 				},
 				{
-					"filename": "plasma_glow_horiz/plasma_glow_horiz-0",
+					"filename": "thrust_backward",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
-						"w": 32,
-						"h": 32
+						"w": 126,
+						"h": 120
 					},
 					"spriteSourceSize": {
-						"x": 0,
-						"y": 2,
-						"w": 32,
-						"h": 27
+						"x": 76,
+						"y": 31,
+						"w": 18,
+						"h": 58
 					},
 					"frame": {
-						"x": 356,
-						"y": 223,
-						"w": 32,
-						"h": 27
-					}
-				},
-				{
-					"filename": "plasma_glow/plasma_glow-0",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 0,
-						"w": 27,
-						"h": 32
-					},
-					"frame": {
-						"x": 390,
-						"y": 223,
-						"w": 27,
-						"h": 32
-					}
-				},
-				{
-					"filename": "plasma_glow_horiz/plasma_glow_horiz-1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 2,
-						"w": 32,
-						"h": 27
-					},
-					"frame": {
-						"x": 356,
-						"y": 252,
-						"w": 32,
-						"h": 27
-					}
-				},
-				{
-					"filename": "plasma_glow/plasma_glow-1",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 2,
-						"y": 0,
-						"w": 27,
-						"h": 32
-					},
-					"frame": {
-						"x": 390,
-						"y": 257,
-						"w": 27,
-						"h": 32
-					}
-				},
-				{
-					"filename": "plasma_glow_horiz/plasma_glow_horiz-2",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 2,
-						"w": 32,
-						"h": 27
-					},
-					"frame": {
-						"x": 291,
-						"y": 270,
-						"w": 32,
-						"h": 27
+						"x": 489,
+						"y": 239,
+						"w": 18,
+						"h": 58
 					}
 				},
 				{
@@ -738,52 +675,10 @@
 						"h": 32
 					},
 					"frame": {
-						"x": 325,
-						"y": 270,
+						"x": 311,
+						"y": 195,
 						"w": 27,
 						"h": 32
-					}
-				},
-				{
-					"filename": "plasma_glow_horiz/plasma_glow_horiz-3",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 2,
-						"w": 32,
-						"h": 27
-					},
-					"frame": {
-						"x": 354,
-						"y": 281,
-						"w": 32,
-						"h": 27
-					}
-				},
-				{
-					"filename": "bar_air",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 256,
-						"h": 16
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 256,
-						"h": 16
-					},
-					"frame": {
-						"x": 1,
-						"y": 271,
-						"w": 256,
-						"h": 16
 					}
 				},
 				{
@@ -801,30 +696,30 @@
 						"h": 32
 					},
 					"frame": {
-						"x": 259,
-						"y": 271,
+						"x": 257,
+						"y": 198,
 						"w": 27,
 						"h": 32
 					}
 				},
 				{
-					"filename": "bar_bg",
+					"filename": "asteroid_tiny",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
-						"w": 256,
+						"w": 16,
 						"h": 16
 					},
 					"spriteSourceSize": {
 						"x": 0,
 						"y": 0,
-						"w": 256,
+						"w": 16,
 						"h": 16
 					},
 					"frame": {
-						"x": 1,
-						"y": 289,
-						"w": 256,
+						"x": 286,
+						"y": 198,
+						"w": 16,
 						"h": 16
 					}
 				},
@@ -843,10 +738,52 @@
 						"h": 46
 					},
 					"frame": {
-						"x": 288,
-						"y": 299,
+						"x": 340,
+						"y": 207,
 						"w": 25,
 						"h": 46
+					}
+				},
+				{
+					"filename": "bar_air",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 256,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 256,
+						"h": 16
+					},
+					"frame": {
+						"x": 1,
+						"y": 299,
+						"w": 256,
+						"h": 16
+					}
+				},
+				{
+					"filename": "bar_bg",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 256,
+						"h": 16
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 256,
+						"h": 16
+					},
+					"frame": {
+						"x": 1,
+						"y": 259,
+						"w": 256,
+						"h": 16
 					}
 				},
 				{
@@ -865,7 +802,7 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 307,
+						"y": 277,
 						"w": 256,
 						"h": 16
 					}
@@ -876,6 +813,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:a1949a235d273e84d82ecb1b1dfe22f3:ca1459305b4c7f3e943758b47776a687:de62c4130a72712ae995d05d7f4a14e5$"
+		"smartupdate": "$TexturePacker:SmartUpdate:39199d2af67a4888e8bded2d0cc10355:7d4ef019492bad52db0f3683b449a28a:de62c4130a72712ae995d05d7f4a14e5$"
 	}
 }

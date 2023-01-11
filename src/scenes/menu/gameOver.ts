@@ -28,18 +28,23 @@ export class GameOverScene extends Scene {
         const that = this;
         const gs = that.scene.get("GameScene") as GameScene;
         const deathCount = gs.player?.deathCount;
-        const gameOverText = this.add.text(this.scale.width/2 - 96, 64, ["Game Over", "", `Death Count: ${deathCount}`], { align: 'center'});
 
-        const tryAgainButton = this.add.image(this.scale.width/2, this.scale.height - 128, 'packed', 'button_try_again');
-        tryAgainButton.setInteractive().on("pointerdown", () => {
-            that.continueGame();
-            //that.scene.get('GameScene').scene.restart();
-        });
+        const $dom = document.createElement("div");
+        $dom.style.textAlign = 'center';
+        $dom.innerHTML = `<h1>Game Over</h1>
+        <h2>Death Count: ${deathCount}</h2>
+        <br/><br/>
+        <button class="red-button">Start over</button>
+        <br/><br/>
+        <button class="green-button">Try again</button>`;
+        this.add.dom(this.scale.width/2, this.scale.height/2, $dom);
 
-        const startOverButton = this.add.image(this.scale.width/2, this.scale.height - 178, 'packed', 'button_start_over');
-        startOverButton.setInteractive().on("pointerdown", () => {
-            that.restartGame();
-        });
+        const $tryAgain = $dom.querySelector("button.green-button") as HTMLElement;
+        $tryAgain.addEventListener("click", this.continueGame.bind(this));
+        $tryAgain.focus();
+
+        const $startOver = $dom.querySelector("button.red-button") as HTMLElement;
+        $startOver.addEventListener("click", this.restartGame.bind(this));
     }
 
     update(time: number, delta: number): void {

@@ -9,7 +9,7 @@ export class GameWonScene extends Scene {
     }
 
     restartGame () {
-        this.scene.stop('GameOverScene');
+        this.scene.stop('GameWonScene');
         this.scene.get('GameScene').scene.restart();
     }
 
@@ -17,13 +17,19 @@ export class GameWonScene extends Scene {
         const that = this;
         const gs = that.scene.get("GameScene") as GameScene;
         const deathCount = gs.player?.deathCount;
-        this.add.text(this.scale.width/2 - 48, 64, ["Congratulations", "", "You won!","",`And only died ${deathCount} times`], { align: 'center'});
 
-        const tryAgainButton = this.add.image(this.scale.width/2, this.scale.height - 128, 'packed', 'button_try_again');
-        tryAgainButton.setInteractive().on("pointerdown", () => {
-            that.scene.stop('GameWonScene');
-            that.scene.get('GameScene').scene.restart();
-        })
+        const $dom = document.createElement("div");
+        $dom.style.textAlign = 'center';
+        $dom.innerHTML = `<h1>Congratulations</h1>
+        <h2>You won!</h2>
+        <p>Death Count: ${deathCount}</p>
+        <br/><br/>
+        <button class="green-button">Start over</button>`;
+        this.add.dom(this.scale.width/2, this.scale.height/2, $dom);
+
+        const $startOver = $dom.querySelector("button.green-button") as HTMLElement;
+        $startOver.addEventListener("click", this.restartGame.bind(this));
+        $startOver.focus();
     }
 
     update(time: number, delta: number): void {

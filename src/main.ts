@@ -1,4 +1,5 @@
 import './style.css';
+import './game.css';
 
 import { Game, Types } from 'phaser';
 import { GameScene } from './scenes/game/gameScene';
@@ -13,6 +14,10 @@ const main = () => {
         type: Phaser.WEBGL,
         width: 1280,
         height: 720,
+        parent: document.getElementById('phaser-parent') as HTMLElement,
+        dom: {
+            createContainer: true
+        },
         input: {
             gamepad: true
         },
