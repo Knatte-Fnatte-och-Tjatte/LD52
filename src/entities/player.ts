@@ -8,14 +8,12 @@ import { Floppy } from "./floppy";
 import { Wreckage } from "./wreckage";
 
 const FUEL_CONSUMPTION = 0.3;
-const TURN_RATE = 0.0003;
-const ACCELERATION_RATE = 0.01;
 
 const OXYGEN_CONSUMPTION_RATE = 0.04;
 
 const STUN_DURATION_MS = 5000.0;
-const COLLISION_STUN_THRESHOLD = 4.0;
-const COLLISION_DEATH_THRESHOLD = 6.0;
+const COLLISION_STUN_THRESHOLD = 6.0;
+const COLLISION_DEATH_THRESHOLD = 8.0;
 
 const PLAYER_MASS = 100.0;
 const PLAYER_BOUNCE = 0.2;
@@ -202,81 +200,94 @@ export class Player extends Physics.Matter.Sprite {
     }
 
     updateControls(delta: number) {
-        const ndelta = delta / 16.0;
-        const body = this.body as any;
-        let curAngVel = body.angularVelocity;
+        let goalMovementVector = new PhaserMath.Vector2(0,0)
 
-        let left = (this.cursorKeys.left.isDown || this.wasdKeys.Q.isDown);
-        let right = (this.cursorKeys.right.isDown || this.wasdKeys.E.isDown);
-        let forward = (this.cursorKeys.up.isDown || this.wasdKeys.W.isDown);
-        let backward = (this.cursorKeys.down.isDown || this.wasdKeys.S.isDown);
-        let turnLeft = this.wasdKeys.A.isDown;
-        let turnRight = this.wasdKeys.D.isDown;
-        let blast = this.cursorKeys?.space.isDown;
+        if(this.cursorKeys.left.isDown || this.wasdKeys.A.isDown){
+            goalMovementVector.x = -1;
+        }
+        if(this.cursorKeys.right.isDown || this.wasdKeys.D.isDown){
+            goalMovementVector.x = 1;
+        }
+        if(this.cursorKeys.up.isDown || this.wasdKeys.W.isDown){
+            goalMovementVector.y = -1;
+        }
+        if(this.cursorKeys.down.isDown || this.wasdKeys.S.isDown){
+            goalMovementVector.y = 1;
+        }
+        goalMovementVector = goalMovementVector.normalize();
+        if(this.cursorKeys?.space.isDown) {
+            this.blast();
+        }
+        let goalRotation = this.rotation;
+        let ignoreMouseCursor = false;
 
         if(this.scene.input.gamepad.gamepads[0]){
             const gamepad = this.scene.input.gamepad.gamepads[0];
-            if(gamepad.left){left = true;}
-            if(gamepad.right){right = true;}
-            if(gamepad.up){forward = true;}
-            if(gamepad.down){backward = true;}
-            if(gamepad.X){turnLeft = true;}
-            if(gamepad.B){turnRight = true;}
-            if(gamepad.A){blast = true;}
+            if(gamepad.A || gamepad.R1 || gamepad.R2){
+                this.blast();
+                ignoreMouseCursor = true;
+            }
+            if((Math.abs(gamepad.leftStick.x) + Math.abs(gamepad.leftStick.y)) > 0.01){
+                goalMovementVector = gamepad.leftStick;
+                ignoreMouseCursor = true;
+            }
         }
 
-        if(blast){
-            this.blast();
+        goalMovementVector = goalMovementVector.multiply(new PhaserMath.Vector2(0.5, 0.5));
+        const curVector = new PhaserMath.Vector2(this.body.velocity.x, this.body.velocity.y).multiply(new PhaserMath.Vector2(0.9, 0.9));
+        const newVector = curVector.add(goalMovementVector);
+        this.setVelocity(newVector.x, newVector.y);
+
+        if((Math.abs(newVector.x) + Math.abs(newVector.y)) > 0.001){
+            goalRotation = Math.atan2(newVector.y, newVector.x);
+        }
+        if(this.scene.input.gamepad.gamepads[0]){
+            const gamepad = this.scene.input.gamepad.gamepads[0];
+            if((Math.abs(gamepad.rightStick.x) + Math.abs(gamepad.rightStick.y)) > 0.5){
+                goalRotation = Math.atan2(gamepad.rightStick.y, gamepad.rightStick.x);
+                ignoreMouseCursor = true;
+            }
         }
 
-        if (left) {
-            this.fuel -= ndelta * FUEL_CONSUMPTION;
-            curAngVel -= TURN_RATE * ndelta;
-            this.thrusterRotateCCW.setVisible(true);
-        } else {
-            this.thrusterRotateCCW.setVisible(false);
+        if(this.scene.input.activePointer.active && !ignoreMouseCursor){
+            if(this.scene.input.activePointer.isDown){
+                this.blast();
+            }
+            const dx = this.scene.input.activePointer.x - this.scene.scale.width/2;
+            const dy = this.scene.input.activePointer.y - this.scene.scale.height/2;
+            const r = Math.atan2(dy,dx);
+            goalRotation = r;
         }
 
-        if (right) {
-            this.fuel -= ndelta * FUEL_CONSUMPTION;
-            curAngVel += TURN_RATE * ndelta;
-            this.thrusterRotateCW.setVisible(true);
-        } else {
-            this.thrusterRotateCW.setVisible(false);
-        }
-        this.setAngularVelocity(curAngVel);
-
-        if (forward) {
-            this.fuel -= ndelta * FUEL_CONSUMPTION;
-            this.thrust(ACCELERATION_RATE * ndelta);
+        const rotatedVector = newVector.rotate(-goalRotation);
+        if(rotatedVector.x > 0.01){
             this.thrusterForward.setVisible(true);
+            this.thrusterForward.setAlpha(Math.abs(rotatedVector.x));
         } else {
             this.thrusterForward.setVisible(false);
         }
-
-        if (backward) {
-            this.fuel -= ndelta * FUEL_CONSUMPTION;
-            this.thrustBack(ACCELERATION_RATE * ndelta);
+        if(rotatedVector.x < -0.01){
             this.thrusterBackward.setVisible(true);
+            this.thrusterBackward.setAlpha(Math.abs(rotatedVector.x));
         } else {
             this.thrusterBackward.setVisible(false);
         }
 
-        if (turnLeft) {
-            this.fuel -= ndelta * FUEL_CONSUMPTION;
-            this.thrustLeft(ACCELERATION_RATE * ndelta);
+        if(rotatedVector.y > 0.01){
+            this.thrusterStrafeRight.setVisible(true);
+            this.thrusterStrafeRight.setAlpha(Math.abs(rotatedVector.y));
+        } else {
+            this.thrusterStrafeRight.setVisible(false);
+        }
+        if(rotatedVector.y < -0.01){
             this.thrusterStrafeLeft.setVisible(true);
+            this.thrusterStrafeLeft.setAlpha(Math.abs(rotatedVector.y));
         } else {
             this.thrusterStrafeLeft.setVisible(false);
         }
 
-        if (turnRight) {
-            this.fuel -= ndelta * FUEL_CONSUMPTION;
-            this.thrustRight(ACCELERATION_RATE * ndelta);
-            this.thrusterStrafeRight.setVisible(true);
-        } else {
-            this.thrusterStrafeRight.setVisible(false);
-        }
+        this.setRotation(goalRotation);
+        this.setAngularVelocity(0);
     }
 
     updateSensors() {
@@ -295,13 +306,15 @@ export class Player extends Physics.Matter.Sprite {
             t.y = this.y;
             t.angle = this.angle;
         }
-        this.updateSensors();
     }
 
     update(time: number, delta: number) {
-        const ndelta = delta / 16.0;
         this.stunned -= delta;
         this.updateChildren();
+        this.updateSensors();
+
+        const ndelta = delta / 16.0;
+
         if(this.didCollide){
             const diff = {x: this.body.velocity.x - this.collisionVelocity.x, y: this.body.velocity.y - this.collisionVelocity.y };
             const dist = Math.sqrt(diff.x * diff.x + diff.y * diff.y);
