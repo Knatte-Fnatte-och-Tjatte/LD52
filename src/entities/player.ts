@@ -166,12 +166,12 @@ export class Player extends Physics.Matter.Sprite {
         this.setRotation(Math.PI * 0.5);
         this.setMass(PLAYER_MASS);
 
-        this.thrusterForward = scene.add.sprite(x,y,'packed','thrust_forward').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterBackward = scene.add.sprite(x,y,'packed','thrust_backward').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterStrafeLeft = scene.add.sprite(x,y,'packed','thrust_strafe_left').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterStrafeRight = scene.add.sprite(x,y,'packed','thrust_strafe_right').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterRotateCW = scene.add.sprite(x,y,'packed','thrust_rotate_cw').setDepth(2).setScale(0.5).setVisible(false);
-        this.thrusterRotateCCW = scene.add.sprite(x,y,'packed','thrust_rotate_ccw').setDepth(2).setScale(0.5).setVisible(false);
+        this.thrusterForward = scene.add.sprite(x,y,'packed','thrust_forward').setDepth(2).setScale(0.5).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
+        this.thrusterBackward = scene.add.sprite(x,y,'packed','thrust_backward').setDepth(2).setScale(0.5).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
+        this.thrusterStrafeLeft = scene.add.sprite(x,y,'packed','thrust_strafe_left').setDepth(2).setScale(0.5).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
+        this.thrusterStrafeRight = scene.add.sprite(x,y,'packed','thrust_strafe_right').setDepth(2).setScale(0.5).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
+        this.thrusterRotateCW = scene.add.sprite(x,y,'packed','thrust_rotate_cw').setDepth(2).setScale(0.5).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
+        this.thrusterRotateCCW = scene.add.sprite(x,y,'packed','thrust_rotate_ccw').setDepth(2).setScale(0.5).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
 
         this.cursorKeys = cursorKeys;
         this.wasdKeys = wasdKeys;
@@ -187,7 +187,7 @@ export class Player extends Physics.Matter.Sprite {
         body.collisionFilter.mask = 0;
         body.onCollideActiveCallback = this.blasterCollide.bind(this);
 
-        this.blasting = scene.add.sprite(x,y,'packed','blaster_blast-0').setDepth(2).setVisible(false);
+        this.blasting = scene.add.sprite(x,y,'packed','blaster_blast-0').setDepth(2).setVisible(false).setBlendMode(Phaser.BlendModes.ADD);
         this.lightmask = scene.add.sprite(x,y,'lightmask').setDepth(1);
         this.lightcone = scene.add.sprite(x,y,'lightcone').setDepth(1).setAlpha(LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA, LIGHTCONE_ALPHA);
 
